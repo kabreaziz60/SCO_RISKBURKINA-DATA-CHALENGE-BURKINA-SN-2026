@@ -27,15 +27,23 @@ VARIABLES = [
 ]
 
 
-def creer_paires(donnees: pd.DataFrame) -> pd.DataFrame:
+def creer_paires(donnees: pd.DataFrame, horizon: int = 1) -> pd.DataFrame:
+    if horizon not in (1, 2):
+        raise ValueError("L'horizon doit être de un ou deux ans.")
     donnees = donnees.sort_values(["province", "annee_scolaire"]).copy()
     groupe = donnees.groupby("province", sort=False)
-    donnees["annee_cible"] = groupe["annee_scolaire"].shift(-1)
-    donnees["score_cible"] = groupe["score_risque"].shift(-1)
-    donnees["region_2025_cible"] = groupe["region_2025"].shift(-1)
+    donnees["annee_cible"] = groupe["annee_scolaire"].shift(-horizon)
+    donnees["score_cible"] = groupe["score_risque"].shift(-horizon)
+    donnees["region_2025_cible"] = groupe["region_2025"].shift(-horizon)
     paires = donnees.dropna(subset=["annee_cible", "score_cible"]).copy()
+    paires["horizon_ans"] = horizon
     paires[VARIABLES] = paires[VARIABLES].fillna(0)
     return paires
+
+
+def annee_future(annee_source: str, horizon: int) -> str:
+    debut, fin = (int(valeur) for valeur in annee_source.split("-"))
+    return f"{debut + horizon:04d}-{fin + horizon:04d}"
 
 
 def pipeline_ridge(alpha: float) -> Pipeline:
@@ -82,38 +90,45 @@ def metriques(y: pd.Series, prediction: np.ndarray, provinces: pd.Series) -> dic
     }
 
 
-def evaluer(
-    entree: Path,
-    sortie_previsions: Path,
-    sortie_projection_future: Path,
-    sortie_importance: Path,
-    sortie_modele: Path,
-    rapport_path: Path,
+def evaluer_horizon(
+    donnees: pd.DataFrame, horizon: int, annee_test: str = "2024-2025"
 ) -> dict:
-    donnees = pd.read_csv(entree)
-    paires = creer_paires(donnees)
-    test = paires[paires["annee_cible"] == "2024-2025"].copy()
-    entrainement = paires[paires["annee_cible"] < "2024-2025"].copy()
+    paires = creer_paires(donnees, horizon=horizon)
+    test = paires[paires["annee_cible"] == annee_test].copy()
+    entrainement = paires[paires["annee_cible"] < annee_test].copy()
     if len(test) != donnees["province"].nunique():
-        raise RuntimeError("Le jeu de test 2024-2025 n'a pas une ligne par province.")
+        raise RuntimeError(
+            f"Le jeu de test {annee_test} à horizon {horizon} n'a pas une ligne par province."
+        )
 
     alpha, validation = choisir_alpha(entrainement)
-    modele = pipeline_ridge(alpha)
-    modele.fit(entrainement[VARIABLES], entrainement["score_cible"])
-    prediction_ridge = np.clip(modele.predict(test[VARIABLES]), 0, 100)
+    modele_test = pipeline_ridge(alpha)
+    modele_test.fit(entrainement[VARIABLES], entrainement["score_cible"])
+    prediction_ridge = np.clip(modele_test.predict(test[VARIABLES]), 0, 100)
     prediction_reference = test["score_risque"].to_numpy()
-
     metriques_reference = metriques(
         test["score_cible"], prediction_reference, test["province"]
     )
-    metriques_ridge = metriques(test["score_cible"], prediction_ridge, test["province"])
-    modele_retenu = "ridge" if metriques_ridge["mae"] < metriques_reference["mae"] else "reference_naive"
-    prediction_retenue = prediction_ridge if modele_retenu == "ridge" else prediction_reference
+    metriques_ridge = metriques(
+        test["score_cible"], prediction_ridge, test["province"]
+    )
+    modele_retenu = (
+        "ridge"
+        if metriques_ridge["mae"] < metriques_reference["mae"]
+        else "reference_naive"
+    )
+    prediction_retenue = (
+        prediction_ridge if modele_retenu == "ridge" else prediction_reference
+    )
+    metriques_retenues = (
+        metriques_ridge if modele_retenu == "ridge" else metriques_reference
+    )
 
-    previsions = pd.DataFrame(
+    backtest = pd.DataFrame(
         {
             "province": test["province"].values,
             "region_2025": test["region_2025_cible"].values,
+            "horizon_ans": horizon,
             "annee_source": test["annee_scolaire"].values,
             "annee_cible": test["annee_cible"].values,
             "score_observe": test["score_cible"].values,
@@ -122,13 +137,8 @@ def evaluer(
             "prediction_retenue": np.round(prediction_retenue, 2),
             "modele_retenu": modele_retenu,
         }
-    ).sort_values("prediction_retenue", ascending=False)
-    sortie_previsions.parent.mkdir(parents=True, exist_ok=True)
-    previsions.to_csv(sortie_previsions, index=False, encoding="utf-8-sig")
+    )
 
-    # Une fois le protocole de test terminé, on réentraîne sur toutes les
-    # transitions observées. La dernière année disponible (2024-2025) sert
-    # alors à produire l'alerte prospective 2025-2026.
     modele_final = pipeline_ridge(alpha)
     modele_final.fit(paires[VARIABLES], paires["score_cible"])
     derniere_annee = donnees[donnees["annee_scolaire"] == "2024-2025"].copy()
@@ -141,62 +151,142 @@ def evaluer(
         if modele_retenu == "ridge"
         else derniere_annee["score_risque"].to_numpy()
     )
-    projection_future = pd.DataFrame(
+    cible = annee_future("2024-2025", horizon)
+    projection = pd.DataFrame(
         {
             "province": derniere_annee["province"].values,
             "region_2025": derniere_annee["region_2025"].values,
+            "horizon_ans": horizon,
             "annee_source": "2024-2025",
-            "annee_cible": "2025-2026",
+            "annee_cible": cible,
             "score_actuel": np.round(derniere_annee["score_risque"].values, 2),
             "score_prevu": np.round(prediction_future, 2),
             "variation_prevue": np.round(
                 prediction_future - derniere_annee["score_risque"].values, 2
             ),
             "modele": modele_retenu,
+            "mae_test": metriques_retenues["mae"],
+            "correlation_rangs_test": metriques_retenues[
+                "correlation_rangs_spearman"
+            ],
+            "top10_communs_test": metriques_retenues["provinces_communes_top10"],
         }
-    ).sort_values("score_prevu", ascending=False)
+    )
+    return {
+        "horizon": horizon,
+        "paires": paires,
+        "entrainement": entrainement,
+        "test": test,
+        "alpha": alpha,
+        "validation": validation,
+        "modele_test": modele_test,
+        "modele_final": modele_final,
+        "reference_naive": metriques_reference,
+        "ridge": metriques_ridge,
+        "modele_retenu": modele_retenu,
+        "metriques_retenues": metriques_retenues,
+        "backtest": backtest,
+        "projection": projection,
+    }
+
+
+def evaluer(
+    entree: Path,
+    sortie_previsions: Path,
+    sortie_projection_future: Path,
+    sortie_importance: Path,
+    sortie_modele: Path,
+    rapport_path: Path,
+) -> dict:
+    donnees = pd.read_csv(entree)
+    resultats = [evaluer_horizon(donnees, horizon) for horizon in (1, 2)]
+
+    previsions = pd.concat(
+        [resultat["backtest"] for resultat in resultats], ignore_index=True
+    ).sort_values(["horizon_ans", "prediction_retenue"], ascending=[True, False])
+    sortie_previsions.parent.mkdir(parents=True, exist_ok=True)
+    previsions.to_csv(sortie_previsions, index=False, encoding="utf-8-sig")
+
+    projection_future = pd.concat(
+        [resultat["projection"] for resultat in resultats], ignore_index=True
+    ).sort_values(["annee_cible", "score_prevu"], ascending=[True, False])
     sortie_projection_future.parent.mkdir(parents=True, exist_ok=True)
     projection_future.to_csv(
         sortie_projection_future, index=False, encoding="utf-8-sig"
     )
 
-    ridge = modele.named_steps["ridge"]
-    importance = pd.DataFrame(
-        {"variable": VARIABLES, "coefficient_standardise": ridge.coef_}
+    importances = []
+    for resultat in resultats:
+        ridge = resultat["modele_test"].named_steps["ridge"]
+        importance = pd.DataFrame(
+            {
+                "horizon_ans": resultat["horizon"],
+                "variable": VARIABLES,
+                "coefficient_standardise": ridge.coef_,
+            }
+        )
+        importance["importance_absolue"] = importance[
+            "coefficient_standardise"
+        ].abs()
+        importances.append(importance)
+    importance = pd.concat(importances, ignore_index=True).sort_values(
+        ["horizon_ans", "importance_absolue"], ascending=[True, False]
     )
-    importance["importance_absolue"] = importance["coefficient_standardise"].abs()
-    importance = importance.sort_values("importance_absolue", ascending=False)
     sortie_importance.parent.mkdir(parents=True, exist_ok=True)
     importance.to_csv(sortie_importance, index=False, encoding="utf-8-sig")
-    joblib.dump(modele_final, sortie_modele)
+    joblib.dump(
+        {
+            "variables": VARIABLES,
+            "modeles": {
+                resultat["horizon"]: resultat["modele_final"]
+                for resultat in resultats
+            },
+        },
+        sortie_modele,
+    )
+
+    evaluations = {}
+    for resultat in resultats:
+        horizon = resultat["horizon"]
+        evaluations[f"horizon_{horizon}_an"] = {
+            "protocole": (
+                f"Prévision directe t vers t+{horizon}; test cible 2024-2025; "
+                "aucune information future utilisée."
+            ),
+            "lignes_entrainement": int(len(resultat["entrainement"])),
+            "lignes_test": int(len(resultat["test"])),
+            "selection_alpha": resultat["validation"],
+            "alpha_retenu": resultat["alpha"],
+            "reference_naive": resultat["reference_naive"],
+            "ridge": resultat["ridge"],
+            "modele_retenu": resultat["modele_retenu"],
+            "metriques_modele_retenu": resultat["metriques_retenues"],
+            "gain_mae_ridge_vs_reference": round(
+                resultat["reference_naive"]["mae"] - resultat["ridge"]["mae"],
+                4,
+            ),
+        }
 
     rapport = {
-        "rapport": "evaluation_prevision_risque",
+        "rapport": "evaluation_prevision_risque_deux_horizons",
         "cree_le_utc": datetime.now(timezone.utc).isoformat(),
-        "protocole": "Paires année t vers t+1 ; entraînement jusqu'à 2023-2024 ; test cible 2024-2025.",
-        "lignes_entrainement": int(len(entrainement)),
-        "lignes_test": int(len(test)),
         "variables": VARIABLES,
-        "selection_alpha": validation,
-        "alpha_retenu": alpha,
-        "reference_naive": metriques_reference,
-        "ridge": metriques_ridge,
-        "modele_retenu": modele_retenu,
-        "annee_projection_future": "2025-2026",
-        "provinces_projetees": int(len(projection_future)),
-        "gain_mae_vs_reference": round(
-            metriques_reference["mae"] - metriques_ridge["mae"], 4
-        ),
+        "evaluations": evaluations,
+        "annees_projection_future": ["2025-2026", "2026-2027"],
+        "provinces_projetees_par_annee": int(donnees["province"].nunique()),
         "empreinte_entree": empreinte_sha256(entree),
         "empreinte_previsions": empreinte_sha256(sortie_previsions),
         "empreinte_projection_future": empreinte_sha256(sortie_projection_future),
         "limite": (
-            "Le jeu est petit et le score cible est un indice relatif. Les prédictions servent "
-            "à prioriser une revue humaine, pas à décider automatiquement."
+            "Le jeu est petit et le score cible est un indice relatif. La seconde année "
+            "est une prévision directe plus incertaine. Les résultats servent à prioriser "
+            "une revue humaine, jamais à décider automatiquement."
         ),
     }
     rapport_path.parent.mkdir(parents=True, exist_ok=True)
-    rapport_path.write_text(json.dumps(rapport, ensure_ascii=False, indent=2), encoding="utf-8")
+    rapport_path.write_text(
+        json.dumps(rapport, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     return rapport
 
 
@@ -205,12 +295,12 @@ def arguments() -> argparse.Namespace:
     parseur.add_argument(
         "--entree", default="03_transformation/SCO-RISKBurkina_03-transformation_D1_engineer_indicateurs-province-annee_v1.csv"
     )
-    parseur.add_argument("--previsions", default="04_analyse/SCO-RISKBurkina_04-analyse_D1_data-scientist_previsions-2024-2025_v1.csv")
+    parseur.add_argument("--previsions", default="04_analyse/SCO-RISKBurkina_04-analyse_D1_data-scientist_backtest-horizons-1-2_v2.csv")
     parseur.add_argument(
-        "--projection-future", default="04_analyse/SCO-RISKBurkina_04-analyse_D1_data-scientist_projection-2025-2026_v1.csv"
+        "--projection-future", default="04_analyse/SCO-RISKBurkina_04-analyse_D1_data-scientist_projection-2025-2027_v2.csv"
     )
-    parseur.add_argument("--importance", default="04_analyse/SCO-RISKBurkina_04-analyse_D1_data-scientist_importance-modele_v1.csv")
-    parseur.add_argument("--modele", default="04_analyse/SCO-RISKBurkina_04-analyse_D1_data-scientist_modele-ridge_v1.joblib")
+    parseur.add_argument("--importance", default="04_analyse/SCO-RISKBurkina_04-analyse_D1_data-scientist_importance-modeles-h1-h2_v2.csv")
+    parseur.add_argument("--modele", default="04_analyse/SCO-RISKBurkina_04-analyse_D1_data-scientist_modeles-h1-h2_v2.joblib")
     parseur.add_argument("--rapport", default="rapports_prives/07_evaluation_modele.json")
     return parseur.parse_args()
 
@@ -231,7 +321,11 @@ def main() -> int:
         chemin(args.modele),
         chemin(args.rapport),
     )
-    print(f"Évaluation terminée : modèle retenu = {rapport['modele_retenu']}.")
+    modeles = {
+        cle: valeur["modele_retenu"]
+        for cle, valeur in rapport["evaluations"].items()
+    }
+    print(f"Évaluation terminée : modèles retenus = {modeles}.")
     print("Seules des métriques agrégées sont écrites dans le rapport.")
     return 0
 

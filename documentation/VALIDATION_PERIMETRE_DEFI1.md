@@ -35,13 +35,15 @@ Un contrôle arithmétique complémentaire a testé 1 800 triplets de taux, pour
 - contours régionaux renforcés ;
 - sélection d'une région pour afficher ses provinces et leurs indicateurs.
 
-### Projection 2025-2026
+### Projections 2025-2026 et 2026-2027
 
 - 17 régions administratives actuelles ;
 - 47 provinces administratives actuelles sur la carte COD-AB ;
 - Djelgodji/Karo-Peli et Dyamongou/Gobnangou sont séparées visuellement ;
 - chaque paire issue d'une scission partage encore la projection de sa province historique source ;
 - les agrégats dédupliquent ces séries afin d'éviter le double comptage.
+
+Deux modèles directs distincts sont utilisés : un horizon d'un an et un horizon de deux ans. La seconde projection n'est donc pas calculée en réutilisant artificiellement la première comme une observation.
 
 ## Décisions méthodologiques à conserver
 

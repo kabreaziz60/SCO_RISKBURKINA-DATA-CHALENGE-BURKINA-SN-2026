@@ -10,10 +10,10 @@
 - sélection raisonnée des sources du Data Pack ;
 - détection et neutralisation des instructions parasites présentes dans certains libellés ;
 - table propre de 360 lignes couvrant 45 provinces et huit années scolaires ;
-- séparation explicite des observations historiques (13 régions, 45 provinces) et de la projection 2025-2026 (17 régions, 47 provinces) ;
+- séparation explicite des observations historiques (13 régions, 45 provinces) et des projections 2025-2026 et 2026-2027 (17 régions, 47 provinces) ;
 - indice transparent, analyse de sensibilité, modèle Ridge comparé à une référence naïve et fiche décideur ;
 - carte 2025-2026 allégée et contrôlée dans le navigateur ;
-- chaîne complète relançable et 14 tests automatisés réussis.
+- chaîne complète relançable et 16 tests automatisés réussis.
 - documentation finale de 13 pages contrôlée visuellement dans Word.
 
 ## Reste avant le dépôt

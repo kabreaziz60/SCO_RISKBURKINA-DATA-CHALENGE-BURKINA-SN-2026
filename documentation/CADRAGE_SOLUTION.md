@@ -32,7 +32,7 @@ Construire d'abord un indice explicable à partir de trois dimensions : abandon,
 
 ### Modèle prédictif
 
-Si les séries provinciales sont suffisantes, prédire le risque de l'année suivante. Entraîner sur les années 2017-2023 et réserver 2024-2025 pour l'évaluation. Comparer le modèle à une référence simple, par exemple la valeur de l'année précédente. Mesurer au minimum l'erreur absolue moyenne et la stabilité du classement des provinces à risque.
+Prédire directement le risque à un et deux ans, pour 2025-2026 et 2026-2027. Entraîner uniquement sur le passé et réserver la cible 2024-2025 pour l'évaluation finale. Comparer chaque horizon à une référence naïve qui reconduit le dernier score. Mesurer l'erreur absolue moyenne, la corrélation des rangs et le recouvrement du groupe des dix provinces prioritaires.
 
 ### Aide à la décision
 

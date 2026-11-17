@@ -9,7 +9,7 @@ Le notebook `02_construction_indice_risque.ipynb` produit :
 
 L'indice principal combine abandon, redoublement et non-achèvement régional avec des poids de 50 %, 30 % et 20 %.
 
-Les observations utilisent les 13 régions et 45 provinces historiques jusqu'en 2024-2025. Seule la projection 2025-2026 est reportée sur les 17 régions et 47 provinces actuelles. Aucune valeur n'est inventée : Djelgodji et Karo-Peli partagent la série historique Soum ; Dyamongou et Gobnangou partagent la série historique Tapoa. Les agrégats utilisent la source une seule fois afin d'éviter le double comptage.
+Les observations utilisent les 13 régions et 45 provinces historiques jusqu'en 2024-2025. Seules les projections 2025-2026 et 2026-2027 sont reportées sur les 17 régions et 47 provinces actuelles. Aucune valeur n'est inventée : Djelgodji et Karo-Peli partagent la série historique Soum ; Dyamongou et Gobnangou partagent la série historique Tapoa. Les agrégats utilisent la source une seule fois afin d'éviter le double comptage.
 
 Contenu attendu : tables harmonisées et variables calculées.
 

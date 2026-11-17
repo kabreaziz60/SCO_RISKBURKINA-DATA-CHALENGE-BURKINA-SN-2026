@@ -21,22 +21,19 @@ Règles à respecter :
 
 ## Proposition pour SCO-RISK
 
-`EQUIPE` est un emplacement provisoire à remplacer par l'identifiant officiel.
+L'identifiant d'équipe retenu est `SCO-RISKBurkina`.
 
 | Étape | Rôle | Nom proposé pour le dépôt |
 |---|---|---|
-| Collecte | engineer | `EQUIPE_01-collecte_D1_engineer_sources-defi1-referencees_v1.zip` |
-| Collecte | architect | `EQUIPE_01-collecte_D1_architect_inventaire-sources_v1.json` |
-| Nettoyage | engineer | `EQUIPE_02-nettoyage_D1_engineer_decrochage-province-annee-propre_v1.csv` |
-| Nettoyage | engineer | `EQUIPE_02-nettoyage_D1_engineer_journal-nettoyage_v1.csv` |
-| Nettoyage | architect | `EQUIPE_02-nettoyage_D1_architect_dictionnaire-variables_v1.csv` |
-| Transformation | architect | `EQUIPE_03-transformation_D1_architect_indicateurs-province-annee_v1.csv` |
-| Transformation | analyst | `EQUIPE_03-transformation_D1_analyst_indice-risque-sensibilite_v1.csv` |
-| Analyse | scientist | `EQUIPE_04-analyse_D1_scientist_evaluation-prevision_v1.csv` |
-| Analyse | scientist | `EQUIPE_04-analyse_D1_scientist_modele-ridge_v1.joblib` |
-| Interprétation | analyst | `EQUIPE_05-interpretation_D1_analyst_carte-alerte-scorisk_v1.zip` |
-| Interprétation | analyst | `EQUIPE_05-interpretation_D1_analyst_fiche-decideur_v1.pdf` |
-| Documentation | équipe | `EQUIPE_D1_documentation-scorisk_v1.pdf` |
+| Collecte | engineer | `SCO-RISKBurkina_01-collecte_D1_engineer_manifeste-sources_v1.csv` |
+| Nettoyage | engineer | `SCO-RISKBurkina_02-nettoyage_D1_engineer_donnees-decrochage-province-annee_v1.csv` |
+| Transformation | engineer | `SCO-RISKBurkina_03-transformation_D1_engineer_indicateurs-province-annee_v1.csv` |
+| Analyse | scientist | `SCO-RISKBurkina_04-analyse_D1_data-scientist_backtest-horizons-1-2_v2.csv` |
+| Analyse | scientist | `SCO-RISKBurkina_04-analyse_D1_data-scientist_projection-2025-2027_v2.csv` |
+| Analyse | scientist | `SCO-RISKBurkina_04-analyse_D1_data-scientist_modeles-h1-h2_v2.joblib` |
+| Interprétation | analyst | `SCO-RISKBurkina_05-interpretation_D1_analyst_priorites-2024-2025_v1.csv` |
+| Interprétation | analyst | `SCO-RISKBurkina_05-interpretation_D1_analyst_fiche-decideur-2024-2025_v1.pdf` |
+| Documentation | équipe | `SCO-RISKBurkina_D1_documentation-solution_v2.pdf` |
 
 ## Fichiers LISEZ-MOI
 

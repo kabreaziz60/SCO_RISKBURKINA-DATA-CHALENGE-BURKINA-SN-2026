@@ -374,13 +374,29 @@ def preparer_jointure(cadre: pd.DataFrame, provinces_carte: list[str]) -> pd.Dat
 
 def recommandations(ligne: pd.Series) -> list[str]:
     actions = []
+    score = float(ligne.get("score_risque", 0))
+    if score >= 75:
+        actions.append(
+            "0-3 mois : lancer une revue territoriale rapide et confirmer l'alerte avec les services provinciaux."
+        )
     if float(ligne["taux_abandon"]) >= 8:
-        actions.append("Déployer un suivi précoce des absences et des retours à l'école.")
-    if float(ligne["taux_redoublement"]) >= 10:
-        actions.append("Cibler l'accompagnement pédagogique et le rattrapage scolaire.")
-    if float(ligne["taux_achevement"]) <= 65:
-        actions.append("Prioriser les mesures de maintien jusqu'à la fin du cycle primaire.")
+        actions.append(
+            "Avant la prochaine rentrée : renforcer le suivi des absences, la recherche des élèves sortis et le retour à l'école."
+        )
+    if float(ligne.get("rang_redoublement", 0)) >= 75:
+        actions.append(
+            "3-12 mois : cibler le soutien pédagogique, le rattrapage et les classes où le redoublement est le plus défavorable."
+        )
+    if float(ligne.get("rang_non_achevement", 0)) >= 75:
+        actions.append(
+            "6-12 mois : coordonner un plan régional de maintien jusqu'au CM2 et examiner les obstacles à la continuité."
+        )
     if not actions:
-        actions.append("Maintenir la surveillance et documenter les pratiques efficaces.")
+        actions.append(
+            "Suivi annuel : maintenir la surveillance et documenter les pratiques locales efficaces."
+        )
+    actions.append(
+        "Validation : croiser le signal avec les fermetures d'écoles, les déplacements et les retours de terrain avant toute allocation."
+    )
     return actions
 

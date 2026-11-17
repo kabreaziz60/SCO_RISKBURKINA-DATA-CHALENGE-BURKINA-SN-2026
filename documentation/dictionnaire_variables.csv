@@ -20,6 +20,7 @@ indicateurs,niveau_alerte,Categorie de lecture du score,texte,Faible Modere Elev
 indicateurs,delta_abandon,Variation annuelle de l abandon,nombre,points de pourcentage,Entre deux annees scolaires,Pipeline SCO-RISK,Difference avec l annee precedente pour la meme province,45,Manquant pour la premiere annee
 indicateurs,delta_redoublement,Variation annuelle du redoublement,nombre,points de pourcentage,Entre deux annees scolaires,Pipeline SCO-RISK,Difference avec l annee precedente pour la meme province,45,Manquant pour la premiere annee
 indicateurs,delta_score,Variation annuelle du score relatif,nombre,points,Entre deux annees scolaires,Pipeline SCO-RISK,Difference avec l annee precedente pour la meme province,45,Mesure une evolution relative
-previsions,score_prevu,Score de risque predit pour l annee suivante,nombre,0 a 100,2024-2025 et 2025-2026,Modele Ridge,Prediction bornee sur l echelle du score,0,Aide a la revue humaine
-previsions,variation_prevue,Ecart entre score predit et dernier score observe,nombre,points,2025-2026,Modele Ridge,score_prevu moins score 2024-2025,0,Ne constitue pas une observation
+previsions,score_prevu,Score de risque predit a l horizon indique,nombre,0 a 100,2025-2026 et 2026-2027,Modeles Ridge directs,Prediction bornee sur l echelle du score,0,Aide a la revue humaine
+previsions,variation_prevue,Ecart entre score predit et dernier score observe,nombre,points,2025-2026 et 2026-2027,Modeles Ridge directs,score_prevu moins score 2024-2025,0,Ne constitue pas une observation
+previsions,horizon_ans,Horizon direct de la prevision,entier,annees,2025-2026 et 2026-2027,Protocole temporel,1 ou 2,0,Evite de confondre les deux projections
 

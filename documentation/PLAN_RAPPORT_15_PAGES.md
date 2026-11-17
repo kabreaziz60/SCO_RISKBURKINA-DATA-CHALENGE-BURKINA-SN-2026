@@ -28,7 +28,7 @@ Le rapport doit répondre directement au Défi 1 et montrer la chaîne complète
 1. Où le risque est-il le plus élevé ?
 2. Comment le risque évolue-t-il ?
 3. Quels indicateurs expliquent le signal ?
-4. Peut-on anticiper l'année suivante et avec quelle fiabilité ?
+4. Peut-on anticiper les deux années suivantes et avec quelle fiabilité ?
 5. Comment un responsable utilise-t-il la carte pour prioriser une action ?
 6. Quelles limites empêchent une interprétation abusive ?
 

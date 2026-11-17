@@ -109,7 +109,7 @@
 \section{Résumé exécutif et réponse au défi}
 \textbf{Question du défi.} Où le risque de décrochage est-il le plus fort, par région, et comment l'anticiper ?
 
-SCO-RISK transforme huit années de statistiques scolaires en un indice transparent, une carte provinciale et une projection prudente. En 2024-2025, les signaux les plus défavorables se concentrent notamment dans le Sahel, l'Est et le Nord. L'outil sert à organiser une revue humaine, prioriser les vérifications et suivre l'évolution territoriale ; il ne remplace pas la décision publique.
+SCO-RISK transforme huit années de statistiques scolaires en un indice transparent, une carte provinciale et deux projections prudentes à un et deux ans. En 2024-2025, les signaux les plus défavorables se concentrent notamment dans le Sahel, l'Est et le Nord. L'outil sert à organiser une revue humaine, prioriser les vérifications et suivre l'évolution territoriale ; il ne remplace pas la décision publique.
 
 \vspace{4mm}
 \keybox{8 années observées}{De 2017-2018 à 2024-2025, en respectant l'année scolaire.}\hfill
@@ -117,7 +117,7 @@ SCO-RISK transforme huit années de statistiques scolaires en un indice transpar
 
 \vspace{3mm}
 \keybox{Double référentiel}{13 régions et 45 provinces observées ; 17 régions et 47 provinces pour la projection.}\hfill
-\keybox{Modèle évalué}{MAE de 9,55 contre 13,97 pour la référence naïve.}
+\keybox{Deux horizons évalués}{MAE de 9,55 à un an et 10,13 à deux ans, toutes deux meilleures que la référence naïve.}
 
 \subsection{Utilisateurs et décisions soutenues}
 Les directions centrales et régionales de l'éducation, les services statistiques et les responsables provinciaux peuvent utiliser la solution pour :
@@ -223,7 +223,7 @@ Les anciennes 13 régions et les nouvelles 17 régions ne se recoupent pas exact
 \begin{tabularx}{\textwidth}{p{3.2cm} p{4.8cm} X}
 \rowcolor{Navy}\color{white}Période & \color{white}Affichage & \color{white}Principe\\
 2017-2018 à 2024-2025 & 13 régions et 45 provinces & Respect des unités présentes dans les sources\\
-Projection 2025-2026 & 17 régions et 47 provinces & Nouveau découpage avec correspondance documentée\\
+Projections 2025-2026 et 2026-2027 & 17 régions et 47 provinces & Nouveau découpage avec correspondance documentée\\
 \end{tabularx}
 
 \subsection{Cas des nouvelles provinces}
@@ -235,7 +235,7 @@ Lorsque l'ancienne province du Soum ou de la Tapoa a été scindée, les nouvell
 
 Une seule série source est comptée dans les synthèses afin d'éviter le double comptage. L'application affiche le statut \og hérité \fg{} ou \og non désagrégé \fg{}.
 
-\note{La carte 2025-2026 est prospective. Elle ne prouve pas que chaque nouvelle province possède déjà un historique statistique autonome.}
+\note{Les cartes 2025-2026 et 2026-2027 sont prospectives. Elles ne prouvent pas que chaque nouvelle province possède déjà un historique statistique autonome.}
 \clearpage
 \thispagestyle{fancy}
 
@@ -312,21 +312,19 @@ La synthèse régionale permet de passer d'une priorité nationale à une coordi
 
 % Page 10
 \section{Anticipation et mesure de fiabilité}
-Le modèle Ridge prédit le score de l'année suivante à partir des informations disponibles avant la période cible. L'évaluation respecte le temps : apprentissage jusqu'en 2023-2024, puis test final sur 2024-2025.
+Deux modèles Ridge directs prédisent le score à un an et à deux ans à partir des informations disponibles en année source. Les deux protocoles respectent le temps et sont testés sur la cible 2024-2025, sans utiliser d'information future.
 
-\begin{tabularx}{\textwidth}{X p{3.6cm} p{3.6cm}}
-\rowcolor{Navy}\color{white}Mesure sur 2024-2025 & \color{white}Référence naïve & \color{white}Modèle Ridge\\
-Erreur absolue moyenne & 13,97 & \textbf{9,55}\\
-Racine de l'erreur quadratique & 18,61 & \textbf{12,47}\\
-Corrélation des rangs & 0,30 & \textbf{0,64}\\
-Provinces communes dans le top 10 & 3 & \textbf{6}\\
+\begin{tabularx}{\textwidth}{p{2.4cm} p{2.4cm} p{2.5cm} p{2.7cm} X}
+\rowcolor{Navy}\color{white}Horizon & \color{white}MAE Ridge & \color{white}MAE naïve & \color{white}Corrélation des rangs & \color{white}Top 10 commun\\
+1 an & \textbf{9,55} & 13,97 & 0,64 & 6 sur 10\\
+2 ans & \textbf{10,13} & 12,72 & 0,69 & 5 sur 10\\
 \end{tabularx}
 
 \subsection{Interprétation}
-Le modèle réduit l'erreur absolue moyenne de 4,42 points par rapport à la référence naïve. Il est donc conservé pour la projection 2025-2026.
+Le Ridge améliore la référence naïve de 4,42 points de MAE à un an et de 2,59 points à deux ans. Il est donc retenu pour 2025-2026 et 2026-2027. La projection à deux ans est directe : elle ne réutilise pas une première prévision comme si elle était observée.
 
 \subsection{Ce que la projection signifie}
-Elle indique quels territoires méritent une vérification anticipée si les relations historiques se maintiennent. Elle ne prévoit ni un nombre d'élèves ni une probabilité individuelle.
+Elle indique quels territoires méritent une vérification anticipée si les relations historiques se maintiennent. Elle ne prévoit ni un nombre d'élèves ni une probabilité individuelle. L'application affiche l'horizon, la MAE de test et les facteurs observés qui accompagnent l'alerte.
 
 \note{Toute alerte projetée doit être confrontée aux informations récentes sur les fermetures d'écoles, les déplacements, l'offre scolaire et les retours des services déconcentrés.}
 \clearpage
@@ -357,7 +355,7 @@ L'application Streamlit relie les filtres, la carte, le détail territorial et l
   \item Cliquer sur \textbf{Réinitialiser les filtres} pour revenir à la vue nationale 2024-2025.
 \end{enumerate}
 
-Le zoom manuel est bloqué afin de conserver un cadrage stable. La projection 2025-2026 est signalée par un avertissement et n'est jamais présentée comme une observation.
+Le zoom manuel est bloqué afin de conserver un cadrage stable. Les projections 2025-2026 et 2026-2027 sont signalées par un avertissement et ne sont jamais présentées comme des observations.
 \clearpage
 \thispagestyle{fancy}
 
@@ -367,10 +365,11 @@ SCO-RISK organise une séquence de vérification et d'action. Il ne déclenche a
 
 \begin{tabularx}{\textwidth}{>{\bfseries}p{3.4cm} X}
 \rowcolor{Navy}\color{white}Horizon & \color{white}Action proposée\\
-Immédiat & Examiner les provinces critiques et élevées, confirmer les indicateurs et documenter les événements locaux.\\
-Court terme & Croiser les alertes avec les fermetures d'écoles, les déplacements, l'offre scolaire et les retours des directions provinciales.\\
-Suivi annuel & Comparer la position, la tendance et les facteurs dominants ; vérifier si l'action réduit durablement le signal.\\
-Amélioration statistique & Ajouter des effectifs compatibles pour calculer des taux pondérés et distinguer les nouvelles provinces.\\
+0 à 3 mois & Examiner les provinces critiques et élevées, confirmer les indicateurs et documenter les événements locaux.\\
+Avant la rentrée & Si l'abandon domine, identifier les ruptures de fréquentation et préparer le suivi du retour à l'école avec les services locaux.\\
+3 à 12 mois & Si le redoublement domine, cibler l'appui pédagogique, l'assiduité et l'accompagnement des classes les plus concernées.\\
+6 à 12 mois & Si le non-achèvement régional domine, coordonner un plan régional sur la continuité des parcours et les transitions.\\
+Suivi annuel & Comparer position, tendance et facteur dominant ; vérifier si l'action réduit durablement le signal.\\
 \end{tabularx}
 
 \subsection{Questions à poser avant une action}
@@ -412,8 +411,8 @@ L'ajout de dénominateurs provinciaux, de données récentes sur les fermetures 
 \thispagestyle{fancy}
 
 % Page 14
-\section{Reproductibilité, conclusion et sources}
-La solution se relance localement depuis les données autorisées jusqu'aux tests finaux.
+\section{Reproductibilité et conclusion}
+La solution se relance localement depuis le classeur autorisé ou, dans le dépôt public, depuis la table nettoyée agrégée jusqu'aux tests finaux.
 
 \begin{center}
 \colorbox{Pale}{\parbox{0.9\textwidth}{\ttfamily
@@ -422,7 +421,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass\\
 }}
 \end{center}
 
-Cette commande reconstruit les données dérivées, contrôle la cohérence, recalcule l'indice, réévalue le modèle, produit les priorités et exécute 14 tests automatisés.
+Cette commande reconstruit les données dérivées, contrôle la cohérence, recalcule l'indice, réévalue le modèle, produit les priorités et exécute 16 tests automatisés.
 
 \subsection{Conclusion}
 SCO-RISK répond au défi en localisant les signaux de décrochage, en montrant leur évolution et en proposant une anticipation évaluée. Sa valeur principale est la traçabilité : chaque alerte est reliée aux indicateurs, à l'année scolaire, au découpage administratif applicable et aux limites de la donnée.
@@ -436,7 +435,7 @@ SCO-RISK répond au défi en localisant les signaux de décrochage, en montrant 
   \item Semaine du numérique 2026, thème officiel de la 21e édition.
 \end{itemize}
 
-\ifx\GitHubURL\empty\else\textbf{Code source :} \url{\GitHubURL}\\\fi
+\ifx\GitHubURL\empty\else\textbf{Code source :} \href{\GitHubURL}{Dépôt GitHub SCO-RISKBurkina}\\\fi
 \ifx\DashboardURL\empty\else\textbf{Tableau de bord :} \url{\DashboardURL}\fi
 
 \vfill

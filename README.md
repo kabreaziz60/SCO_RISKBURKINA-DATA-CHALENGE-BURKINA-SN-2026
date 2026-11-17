@@ -2,7 +2,7 @@
 
 Carte d'alerte et outil d'aide à la décision pour anticiper le risque de décrochage scolaire au primaire au Burkina Faso.
 
-SCO-RISK répond au **Défi 1 - Décrochage scolaire** du Data Challenge Burkina 2026. La solution transforme les statistiques scolaires disponibles en un indice transparent, une carte interactive, une lecture régionale et une projection prudente pour l'année suivante.
+SCO-RISK répond au **Défi 1 - Décrochage scolaire** du Data Challenge Burkina 2026. La solution transforme les statistiques scolaires disponibles en un indice transparent, une carte interactive, une lecture régionale et deux projections prudentes à un et deux ans.
 
 **SCO** signifie *Système de Cartographie et d'Orientation* ; **RISK** désigne le risque de décrochage scolaire.
 
@@ -17,7 +17,7 @@ SCO-RISK répond au **Défi 1 - Décrochage scolaire** du Data Challenge Burkina
 - comparer les territoires pour une même année scolaire ;
 - suivre l'évolution du risque de 2017-2018 à 2024-2025 ;
 - sélectionner une région puis une province pour consulter ses indicateurs ;
-- distinguer clairement les observations de la projection 2025-2026 ;
+- distinguer clairement les observations des projections 2025-2026 et 2026-2027 ;
 - produire des priorités de vérification et des recommandations pour les décideurs.
 
 ## Principes de lecture
@@ -26,6 +26,7 @@ SCO-RISK répond au **Défi 1 - Décrochage scolaire** du Data Challenge Burkina
 |---|---|---|
 | 2017-2018 à 2024-2025 | 13 régions et 45 provinces historiques | Données observées |
 | 2025-2026 | 17 régions et 47 provinces actuelles | Projection |
+| 2026-2027 | 17 régions et 47 provinces actuelles | Projection à deux ans |
 
 Les deux découpages ne sont jamais fusionnés comme s'ils représentaient les mêmes unités. Les nouvelles provinces sans historique propre sont signalées comme des projections héritées de leur ancienne province source.
 
@@ -53,6 +54,8 @@ documentation/        rapport, dictionnaire et méthode
 scripts/              chaîne locale reproductible
 tests/                tests automatisés
 ```
+
+Chaque étape contient un `LISEZ-MOI` et des fichiers nommés selon le modèle officiel `EQUIPE_ETAPE_DEFI_ROLE_description_vN`. Le dossier `01_collecte` publie un manifeste des sources plutôt que les données brutes ; `04_analyse` contient le backtest, les deux projections, les coefficients et les modèles relançables ; `05_interpretation` contient les priorités et la fiche décideur.
 
 ## Installation locale
 
@@ -97,7 +100,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\scripts\executer_pipeline.ps1
 ```
 
-Le pipeline reconstruit les données dérivées, contrôle la cohérence, recalcule l'indice, évalue le modèle, produit les priorités et exécute les tests.
+Le pipeline reconstruit les données dérivées, contrôle la cohérence, recalcule l'indice, évalue le modèle, produit les priorités et exécute les tests. Dans le dépôt public, il repart de la table nettoyée publiée puisque le classeur brut est volontairement exclu ; dans l'environnement autorisé du challenge, la présence d'un unique classeur à la racine relance aussi l'étape de nettoyage.
 
 Pour lancer uniquement les tests :
 
@@ -127,6 +130,15 @@ Les traitements sont réalisés localement. Les données sources ne sont pas env
 ## Documentation
 
 Le rapport méthodologique LaTeX et sa version PDF sont disponibles dans le dossier `documentation` et dans `output/pdf`.
+
+## Sources et technologies
+
+- **Données éducatives :** DGESS / MEBAPLN, statistiques et annuaires du primaire 2016-2025 ;
+- **Cartographie :** limites historiques cohérentes avec les annuaires et COD-AB / OCHA, version d'août 2025 ;
+- **Cadre du projet :** document et Data Pack du Data Challenge Burkina 2026 ;
+- **Application :** Python, Streamlit, Pandas, NumPy et Plotly ;
+- **Modélisation :** scikit-learn, modèle Ridge et évaluation temporelle ;
+- **Formats :** CSV, JSON et GeoJSON.
 
 ## Équipe
 

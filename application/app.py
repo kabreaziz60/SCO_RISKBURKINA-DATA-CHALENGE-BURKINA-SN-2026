@@ -34,7 +34,7 @@ CARTE_2025 = DOSSIER_APP / "data" / "provinces_47_2025.geojson"
 REFERENTIEL = RACINE / "config" / "referentiel_administratif_2025.json"
 REFERENTIEL_HISTORIQUE = RACINE / "config" / "referentiel_provinces_historiques.json"
 DONNEES_REELLES = RACINE / "03_transformation" / "SCO-RISKBurkina_03-transformation_D1_engineer_indicateurs-province-annee_v1.csv"
-PREVISIONS_FUTURES = RACINE / "04_analyse" / "SCO-RISKBurkina_04-analyse_D1_data-scientist_projection-2025-2026_v1.csv"
+PREVISIONS_FUTURES = RACINE / "04_analyse" / "SCO-RISKBurkina_04-analyse_D1_data-scientist_projection-2025-2027_v2.csv"
 PRIORITES_DECIDEUR = RACINE / "05_interpretation" / "SCO-RISKBurkina_05-interpretation_D1_analyst_priorites-2024-2025_v1.csv"
 LOGO_SN = DOSSIER_APP / "assets" / "logo_semaine_numerique.png"
 LOGO_ADE = DOSSIER_APP / "assets" / "logo_africa_data_entry.jpg"
@@ -127,7 +127,19 @@ st.markdown(
     .section-title { display:flex; align-items:center; gap:11px; margin:1.2rem 0 .75rem; color:#082f49; font-size:1.28rem; font-weight:850; letter-spacing:-.015em; }
     .section-title span { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; flex:0 0 34px; border-radius:10px; background:linear-gradient(135deg,#075985,#0e7490); color:white; font-size:.82rem; box-shadow:0 6px 14px rgba(7,89,133,.2); }
     .section-title small { display:block; color:#607789; font-size:.84rem; font-weight:550; letter-spacing:0; margin-top:2px; }
+    .app-footer { margin:2rem 0 0; padding:1.35rem 1.5rem 1.15rem; border-radius:18px; background:linear-gradient(135deg,#06283d,#075985); color:#eaf8ff; box-shadow:0 14px 34px rgba(8,47,73,.18); }
+    .app-footer h3 { margin:0 0 .75rem !important; color:white !important; font-size:1.15rem !important; }
+    .footer-grid { display:grid; grid-template-columns:1.45fr 1fr; gap:1.6rem; }
+    .footer-label { color:#fbbf24; font-size:.8rem; font-weight:850; letter-spacing:.07em; text-transform:uppercase; margin-bottom:.35rem; }
+    .footer-list { margin:0; padding-left:1.05rem; color:#eaf8ff; }
+    .footer-list li { margin:.18rem 0; font-size:.88rem !important; line-height:1.4 !important; }
+    .app-footer a { color:#b9efff; text-decoration:none; font-weight:700; }
+    .app-footer a:hover { color:white; text-decoration:underline; }
+    .tech-tags { display:flex; flex-wrap:wrap; gap:.42rem; margin-top:.35rem; }
+    .tech-tag { display:inline-flex; padding:.35rem .62rem; border:1px solid rgba(255,255,255,.24); border-radius:999px; background:rgba(255,255,255,.1); color:white; font-size:.8rem; font-weight:700; }
+    .footer-note { margin-top:1rem; padding-top:.75rem; border-top:1px solid rgba(255,255,255,.18); color:#ccebf5; font-size:.8rem; text-align:center; }
     @media (max-width:1000px) { .hero-logo-ade { width:82px; } .hero-logo-sn { width:118px; } .hero { gap:12px; padding:18px; } .hero h1 { font-size:2.1rem; } .status-row { grid-template-columns:1fr; } }
+    @media (max-width:760px) { .footer-grid { grid-template-columns:1fr; } }
     </style>
     """,
     unsafe_allow_html=True,
@@ -149,18 +161,30 @@ def charger_indicateurs(provinces: tuple[str, ...]) -> tuple[pd.DataFrame, bool]
         cadre["annee_indicateurs"] = cadre["annee_scolaire"].astype(str)
         if PREVISIONS_FUTURES.exists():
             previsions = pd.read_csv(PREVISIONS_FUTURES)
-            derniere = cadre[
+            derniere_observation = cadre[
                 cadre["annee_scolaire"].astype(str) == "2024-2025"
             ].copy()
-            scores = previsions.set_index("province")["score_prevu"]
-            variations = previsions.set_index("province")["variation_prevue"]
-            derniere["score_risque"] = derniere["province"].map(scores)
-            derniere["variation_prevue"] = derniere["province"].map(variations)
-            derniere["annee_scolaire"] = "2025-2026"
-            derniere["annee_indicateurs"] = "2024-2025"
-            derniere["type_donnee"] = "Prévision"
-            derniere["fiabilite"] = 0.64
-            cadre = pd.concat([cadre, derniere], ignore_index=True)
+            projections = []
+            for annee_cible, groupe in previsions.groupby("annee_cible", sort=True):
+                projection = derniere_observation.copy()
+                index_province = groupe.set_index("province")
+                projection["score_risque"] = projection["province"].map(
+                    index_province["score_prevu"]
+                )
+                projection["variation_prevue"] = projection["province"].map(
+                    index_province["variation_prevue"]
+                )
+                projection["annee_scolaire"] = str(annee_cible)
+                projection["annee_indicateurs"] = "2024-2025"
+                projection["type_donnee"] = "Prévision"
+                projection["horizon_ans"] = int(groupe["horizon_ans"].iloc[0])
+                projection["mae_test"] = float(groupe["mae_test"].iloc[0])
+                projection["fiabilite"] = max(
+                    0.0, float(groupe["correlation_rangs_test"].iloc[0])
+                )
+                projections.append(projection)
+            if projections:
+                cadre = pd.concat([cadre, *projections], ignore_index=True)
         return cadre, False
     return generer_donnees_demo(list(provinces)), True
 
@@ -218,7 +242,7 @@ st.markdown(
     <div class="status-row">
       <div class="status-chip"><strong>8 années</strong> scolaires observées</div>
       <div class="status-chip"><strong>45 provinces</strong> dans l'historique</div>
-      <div class="status-chip"><strong>17 régions · 47 provinces</strong> pour la projection</div>
+      <div class="status-chip"><strong>2 années</strong> de projection évaluée</div>
     </div>
     """,
     unsafe_allow_html=True,
@@ -279,10 +303,10 @@ with st.sidebar:
     annee = st.selectbox(
         "Année scolaire",
         annees,
-        help="Les années 2017-2018 à 2024-2025 sont observées. 2025-2026 est une projection.",
+        help="Les années 2017-2018 à 2024-2025 sont observées. 2025-2026 et 2026-2027 sont des projections.",
         key="filtre_annee",
     )
-vue_nouveau_decoupage = annee == "2025-2026"
+vue_nouveau_decoupage = annee in {"2025-2026", "2026-2027"}
 colonne_region = "region_affichage"
 libelle_referentiel = (
     "Projection sur le découpage actuel : 17 régions et 47 provinces"
@@ -310,7 +334,7 @@ if annees_observees:
     st.caption(
         f"Historique analysé : **{annees_observees[0]} à {annees_observees[-1]}** "
         f"({len(annees_observees)} années scolaires observées). "
-        "La projection 2025-2026 est disponible séparément dans le sélecteur."
+        "Les projections 2025-2026 et 2026-2027 sont disponibles séparément dans le sélecteur."
     )
 
 vue = donnees[donnees["annee_scolaire"].astype(str) == annee].copy()
@@ -385,7 +409,8 @@ else:
 est_prevision = bool((vue_focus["type_donnee"] == "Prévision").all())
 if est_prevision:
     st.warning(
-        "**Projection 2025-2026.** La couleur représente un score prévu par le modèle. "
+        f"**Projection {annee}.** La couleur représente un score prévu par le modèle "
+        f"à horizon {int(vue_focus['horizon_ans'].iloc[0])} an(s). "
         "Les taux affichés comme facteurs sont les derniers taux observés (2024-2025), "
         "pas des taux futurs mesurés."
     )
@@ -615,7 +640,8 @@ with droite:
     if est_prevision:
         variation = float(ligne.get("variation_prevue", 0))
         st.caption(
-            f"Prévision 2025-2026 · variation estimée : {variation:+.1f} point(s) · "
+            f"Prévision {annee} · variation estimée : {variation:+.1f} point(s) · "
+            f"MAE de test : {float(ligne.get('mae_test', float('nan'))):.1f} · "
             "facteurs observés en 2024-2025."
         )
     facteurs = pd.DataFrame(
@@ -812,14 +838,49 @@ with st.expander("Méthode, limites et reproductibilité"):
         - **Unité de décision :** province et année scolaire.
         - **Score transparent :** 50 % abandon provincial, 30 % redoublement provincial et 20 % non-achèvement régional. La stabilité a été testée avec deux autres pondérations.
         - **Évaluation temporelle :** apprentissage jusqu'à 2023-2024 et test final sur 2024-2025. Le modèle Ridge obtient une MAE de 9,55 contre 13,97 pour la référence naïve, et retrouve 6 provinces sur 10 du groupe prioritaire.
-        - **Projection 2025-2026 :** le modèle validé est réentraîné sur toutes les transitions disponibles. La prévision sert à prioriser une revue humaine, jamais à décider automatiquement.
+        - **Projections 2025-2026 et 2026-2027 :** deux modèles directs Ridge, à horizons d'un et deux ans, sont testés sur la cible 2024-2025 puis réentraînés sur toutes les transitions disponibles. Les prévisions servent à prioriser une revue humaine, jamais à décider automatiquement.
         - **Observations :** les années 2017-2018 à 2024-2025 utilisent les 13 régions et 45 provinces présentes dans les sources DGESS.
-        - **Projection 2025-2026 :** elle utilise la carte actuelle à 17 régions et 47 provinces. Les scissions Soum et Tapoa sont visibles, mais leurs valeurs restent héritées des 45 séries sources et sont dédupliquées dans les agrégats.
+        - **Projections futures :** elles utilisent la carte actuelle à 17 régions et 47 provinces. Les scissions Soum et Tapoa sont visibles, mais leurs valeurs restent héritées des 45 séries sources et sont dédupliquées dans les agrégats.
         - **Limite :** les données provinciales d'abandon et de redoublement proviennent des annuaires, tandis que l'achèvement n'est disponible qu'au niveau régional.
         """
     )
     st.caption(
         "Sources cartographiques : limites historiques cohérentes avec les annuaires DGESS ; "
-        "COD-AB août 2025 pour la projection 2025-2026."
+        "COD-AB août 2025 pour les projections 2025-2026 et 2026-2027."
     )
+
+st.markdown(
+    """
+    <footer class="app-footer">
+      <h3>Sources, technologies et reproductibilité</h3>
+      <div class="footer-grid">
+        <div>
+          <div class="footer-label">Sources des données</div>
+          <ul class="footer-list">
+            <li><a href="https://www.education.gov.bf/fileadmin/user_upload/storages/annuaire_statistique_du_primaire_2024-2025_vf.pdf" target="_blank">DGESS / MEBAPLN</a> — statistiques et annuaires du primaire 2016-2025.</li>
+            <li><a href="https://humanitarian.atlassian.net/wiki/spaces/imtoolbox/pages/2557378679" target="_blank">COD-AB / OCHA</a> — limites administratives du Burkina Faso, version d'août 2025.</li>
+            <li>Data Challenge Burkina 2026 — document du challenge, Data Pack et référentiels fournis aux équipes.</li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-label">Technologies utilisées</div>
+          <div class="tech-tags">
+            <a class="tech-tag" href="https://www.python.org/" target="_blank">Python</a>
+            <a class="tech-tag" href="https://docs.streamlit.io/" target="_blank">Streamlit</a>
+            <a class="tech-tag" href="https://pandas.pydata.org/docs/" target="_blank">Pandas</a>
+            <a class="tech-tag" href="https://numpy.org/doc/" target="_blank">NumPy</a>
+            <a class="tech-tag" href="https://plotly.com/python/" target="_blank">Plotly</a>
+            <a class="tech-tag" href="https://scikit-learn.org/stable/" target="_blank">scikit-learn</a>
+            <span class="tech-tag">GeoJSON</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-note">
+        SCO-RISKBurkina • Défi 1 — Décrochage scolaire •
+        <a href="https://github.com/kabreaziz60/SCO_RISKBURKINA-DATA-CHALENGE-BURKINA-SN-2026" target="_blank">Code source et méthode sur GitHub</a>
+      </div>
+    </footer>
+    """,
+    unsafe_allow_html=True,
+)
 

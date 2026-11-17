@@ -238,11 +238,12 @@ def generer(priorites_path: Path, regions_path: Path, sortie: Path) -> None:
             styles["encadre"],
         ),
         Spacer(1, 3 * mm),
-        p("Anticipation 2025-2026", styles["section"]),
+        p("Anticipation 2025-2027", styles["section"]),
         p(
             "Le modèle Ridge réduit l'erreur absolue moyenne à <b>9,55 points</b>, contre "
             "<b>13,97</b> pour la référence naïve. Il retrouve 6 provinces sur 10 du groupe "
-            "prioritaire lors du test 2024-2025. La projection sert à déclencher une revue humaine, pas à décider automatiquement.",
+            "prioritaire lors du test 2024-2025. À deux ans, la MAE est de <b>10,13 points</b> "
+            "contre <b>12,72</b> pour la référence naïve. Les deux projections servent à déclencher une revue humaine, pas à décider automatiquement.",
             styles["encadre"],
         ),
         Spacer(1, 3 * mm),

@@ -1,0 +1,6 @@
+source,producteur,periode,usage,statut_public,publication_dans_git,limite
+Statistiques education prescolaire et primaire,DGESS-MEBAPLN,2016-2025,Donnees principales abandon redoublement achevement,Source du challenge,Non source brute exclue,Formats et decoupages variables selon les annees
+Annuaire statistique primaire 2024-2025,DGESS-MEBAPLN,2024-2025,Controle de la derniere annee observee,Public,Reference uniquement,Annee scolaire distincte de l annee civile
+Limites administratives historiques,Referentiel du Data Pack,Periode historique,Carte des observations 13 regions et 45 provinces,Source du challenge,GeoJSON derive inclus,Correspondance des noms documentee
+Limites administratives COD-AB,OCHA et partenaires,Aout 2025,Carte prospective 17 regions et 47 provinces,Public,GeoJSON necessaire inclus,Deux nouvelles paires de provinces sans serie statistique autonome
+Guide Data Challenge Burkina,MTDPCE et Africa Data Entry,Edition Education 2026,Cadrage du defi et regles de depot,Document du challenge,Non,15 pages maximum et depots en cinq etapes

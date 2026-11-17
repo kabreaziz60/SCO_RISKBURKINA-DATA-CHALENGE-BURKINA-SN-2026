@@ -43,7 +43,7 @@ Les seuils d'affichage sont : faible sous 35, modéré de 35 à 54,9, élevé de
 ## Structure du projet
 
 ```text
-01_collecte/          sources référencées et inventaire
+depot_prive/01_collecte/  classeur original, uniquement en local et dans le dépôt sécurisé
 02_nettoyage/         notebook, table propre et journal de nettoyage
 03_transformation/    indicateurs, correspondances et sensibilité
 04_analyse/           évaluation temporelle, modèle et prévisions
@@ -59,7 +59,7 @@ Les dossiers d'étape contiennent uniquement leurs livrables. Toute l'explicatio
 
 | Dossier | Contenu public | Rôle dans le parcours |
 |---|---|---|
-| `01_collecte` | Manifeste des sources d'origine | Identifie le producteur, la période, l'usage et les limites. Le classeur brut reste hors de GitHub. |
+| `01_collecte` privé | Classeur Excel original à 14 feuilles | Constitue la donnée réellement collectée. Il est préparé localement dans `depot_prive/01_collecte` et reste hors de GitHub. |
 | `02_nettoyage` | Table province-année nettoyée et notebook | Harmonise les noms, traite les valeurs manquantes et conserve la trace des anomalies. |
 | `03_transformation` | Indicateurs, correspondances territoriales et sensibilité | Construit l'indice de risque et organise les référentiels 13/17 régions et 45/47 provinces. |
 | `04_analyse` | Backtests, notebook, modèles, coefficients et projections | Évalue les horizons un et deux ans et produit 2025-2026 et 2026-2027. |
@@ -67,7 +67,7 @@ Les dossiers d'étape contiennent uniquement leurs livrables. Toute l'explicatio
 
 ### Pourquoi les données brutes ne figurent pas dans `01_collecte` sur GitHub
 
-Le dossier local de soumission peut contenir les fichiers d'origine autorisés par l'organisateur. Le dépôt GitHub public contient seulement leur manifeste et les données agrégées nécessaires à la reproduction. Cette séparation évite de republier un classeur du challenge sans autorisation et empêche l'exposition de données sensibles. Les fichiers bruts seront déposés séparément dans l'espace sécurisé du challenge si le formulaire les exige.
+Le fichier principal collecté est le classeur Excel DGESS 2016-2025 à 14 feuilles. Il est conservé localement dans `depot_prive/01_collecte` pour la remise sécurisée. Son manifeste est placé dans `documentation`, tandis que GitHub contient uniquement le code et les données agrégées nécessaires au fonctionnement. Cette séparation évite de republier le classeur du challenge sans autorisation. Le Data Pack complet, beaucoup plus volumineux et facultatif, n'est pas dupliqué dans le dépôt final.
 
 ## Installation locale
 

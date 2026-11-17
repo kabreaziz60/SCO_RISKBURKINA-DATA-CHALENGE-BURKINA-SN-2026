@@ -25,7 +25,7 @@ L'identifiant d'équipe retenu est `SCO-RISKBurkina`.
 
 | Étape | Rôle | Nom proposé pour le dépôt |
 |---|---|---|
-| Collecte | engineer | `SCO-RISKBurkina_01-collecte_D1_engineer_manifeste-sources_v1.csv` |
+| Collecte privée | engineer | `SCO-RISKBurkina_01-collecte_D1_engineer_donnees-statistiques-prescolaire-primaire-2016-2025_v1.xlsx` |
 | Nettoyage | engineer | `SCO-RISKBurkina_02-nettoyage_D1_engineer_donnees-decrochage-province-annee_v1.csv` |
 | Transformation | engineer | `SCO-RISKBurkina_03-transformation_D1_engineer_indicateurs-province-annee_v1.csv` |
 | Analyse | scientist | `SCO-RISKBurkina_04-analyse_D1_data-scientist_backtest-horizons-1-2_v2.csv` |
@@ -41,4 +41,4 @@ Le README principal précise ce que contient chaque dossier, les sources, les sc
 
 ## Décision de sécurité
 
-Les fichiers du projet ne seront pas renommés directement. Une arborescence de dépôt séparée sera générée afin de préserver les sources, les notebooks et les chemins utilisés par les scripts.
+Le classeur original n'est jamais modifié. Une copie portant le nom officiel est préparée dans `depot_prive/01_collecte` pour la remise sécurisée. Le Data Pack complet reste facultatif et n'est pas dupliqué. Le manifeste public est rangé dans `documentation`, pas dans la collecte.

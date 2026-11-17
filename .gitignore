@@ -4,6 +4,7 @@
 *.xlsm
 01_collecte/data/
 data_pack/
+depot_prive/
 
 # Rapports de contrôle détaillés conservés localement
 rapports_prives/*

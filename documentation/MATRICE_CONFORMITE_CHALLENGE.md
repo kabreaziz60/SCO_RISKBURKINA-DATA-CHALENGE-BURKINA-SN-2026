@@ -18,7 +18,7 @@ Cette grille reprend le guide officiel et les précisions données pendant la r�
 
 | Étape | État | Livrables |
 |---|---|---|
-| `01_collecte` | Fait | Classeur principal référencé, Data Pack conservé, sélection documentée des sources utiles. |
+| `01_collecte` | Fait | Classeur Excel original à 14 feuilles conservé dans le dépôt privé local ; manifeste public déplacé dans `documentation`. |
 | `02_nettoyage` | Fait | Notebook de nettoyage, fichier unique province-année, rapport qualité et journal. |
 | `03_transformation` | Fait | Indicateurs et indice de risque, analyse de sensibilité. |
 | `04_analyse` | Fait avec limite documentée | Évaluation temporelle, prévisions et mesure de fiabilité. Les taux restent des moyennes non pondérées faute de dénominateurs provinciaux compatibles. |
@@ -43,7 +43,7 @@ Cette grille reprend le guide officiel et les précisions données pendant la r�
 | Sources facultatives utiles | Partiellement fait | Les annuaires CNS et la cartographie publique sont utilisés. Ne pas multiplier les sources sans utilité. |
 | Carte ou tableau de bord interactif | Fait | SCO-RISK permet année, région, province et seuil d'alerte. |
 | Modèle prédictif avec fiabilité | Fait | Le modèle est un bonus ; il reste séparé de l'analyse observée. |
-| Dépôts à chaque étape et par rôle | Fait | Dossiers `01_collecte` à `05_interpretation`, livrables uniquement et noms normalisés. |
+| Dépôts à chaque étape et par rôle | Fait | `01_collecte` préparé dans le dépôt privé sécurisé ; étapes 02 à 05 publiées avec des noms normalisés. |
 | Fiche d'une page pour un décideur | Fait | `05_interpretation/SCO-RISKBurkina_05-interpretation_D1_analyst_fiche-decideur-2024-2025_v1.pdf`. |
 | Code relançable de bout en bout | Fait | Lanceur unique et 16 tests automatisés. |
 

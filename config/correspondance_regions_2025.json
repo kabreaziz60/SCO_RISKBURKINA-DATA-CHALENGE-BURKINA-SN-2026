@@ -1,0 +1,30 @@
+{
+  "version": "v1",
+  "date_reforme": "2025-07-02",
+  "regle": "Correspondance territoriale de cadrage. Ne jamais répartir automatiquement une valeur d'une ancienne région entre plusieurs nouvelles régions.",
+  "sources": [
+    {
+      "titre": "Compte rendu du Conseil des ministres du 2 juillet 2025",
+      "url": "https://www.matd.gov.bf/accueil/actualites/details?tx_news_pi1%5Bnews%5D=763"
+    },
+    {
+      "titre": "Nouvelle carte administrative du Burkina Faso",
+      "url": "https://www.matd.gov.bf/accueil/actualites/details?tx_news_pi1%5Bnews%5D=640"
+    }
+  ],
+  "correspondances": [
+    {"ancienne_region": "Boucle du Mouhoun", "nouvelles_regions": ["Bankui", "Sourou"], "type": "scission"},
+    {"ancienne_region": "Cascades", "nouvelles_regions": ["Tannounyan"], "type": "renommage"},
+    {"ancienne_region": "Centre", "nouvelles_regions": ["Kadiogo"], "type": "renommage"},
+    {"ancienne_region": "Centre-Est", "nouvelles_regions": ["Nakambe"], "type": "renommage"},
+    {"ancienne_region": "Centre-Nord", "nouvelles_regions": ["Kuilse"], "type": "renommage"},
+    {"ancienne_region": "Centre-Ouest", "nouvelles_regions": ["Nando"], "type": "renommage"},
+    {"ancienne_region": "Centre-Sud", "nouvelles_regions": ["Nazinon"], "type": "renommage"},
+    {"ancienne_region": "Est", "nouvelles_regions": ["Goulmou", "Sirba", "Tapoa"], "type": "scission"},
+    {"ancienne_region": "Hauts-Bassins", "nouvelles_regions": ["Guiriko"], "type": "renommage"},
+    {"ancienne_region": "Nord", "nouvelles_regions": ["Yaadga"], "type": "renommage"},
+    {"ancienne_region": "Plateau-Central", "nouvelles_regions": ["Oubri"], "type": "renommage"},
+    {"ancienne_region": "Sahel", "nouvelles_regions": ["Liptako", "Soum"], "type": "scission"},
+    {"ancienne_region": "Sud-Ouest", "nouvelles_regions": ["Djoro"], "type": "renommage"}
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "version": "v1",
+  "date_effet_juridique": "2025-08-07",
+  "description": "Référentiel de contrôle pour reconstruire les 17 régions et 47 provinces à partir des départements. Les graphies seront encore confrontées au Data Pack.",
+  "sources": [
+    {
+      "titre": "Décret n°2025-1012 portant réorganisation du territoire national",
+      "url": "https://textes.compta-ct.net/fichiers/decret-2025-1012-reorganisation-territoire-national.pdf"
+    },
+    {
+      "titre": "Annuaire statistique national 2024, édition 2025 - INSD",
+      "url": "https://www.insd.bf/sites/default/files/2026-01/Annuaire%20statistique%20national%202024%20VF-31-12-2025.pdf"
+    },
+    {
+      "titre": "Conseil des ministres du 2 juillet 2025",
+      "url": "https://www.presidencedufaso.bf/wp-content/uploads/2025/07/CONSEIL-DES-MINISTRES-N%C2%B022-DU-02-JUILLET-2025.pdf"
+    }
+  ],
+  "regions": [
+    {"region": "Bankui", "provinces": ["Bale", "Banwa", "Mouhoun"]},
+    {"region": "Djoro", "provinces": ["Bougouriba", "Ioba", "Noumbiel", "Poni"]},
+    {"region": "Goulmou", "provinces": ["Gourma", "Kompienga"]},
+    {"region": "Guiriko", "provinces": ["Houet", "Kenedougou", "Tuy"]},
+    {"region": "Kadiogo", "provinces": ["Kadiogo"]},
+    {"region": "Koulse", "provinces": ["Bam", "Namentenga", "Sandbondtenga"]},
+    {"region": "Liptako", "provinces": ["Oudalan", "Seno", "Yagha"]},
+    {"region": "Nakambe", "provinces": ["Boulgou", "Koulpelogo", "Kourittenga"]},
+    {"region": "Nando", "provinces": ["Boulkiemde", "Sanguie", "Sissili", "Ziro"]},
+    {"region": "Nazinon", "provinces": ["Bazega", "Nahouri", "Zoundweogo"]},
+    {"region": "Oubri", "provinces": ["Bassitenga", "Ganzourgou", "Kourweogo"]},
+    {"region": "Sirba", "provinces": ["Gnagna", "Komondjari"]},
+    {"region": "Soum", "provinces": ["Djelgodji", "Karo-Peli"]},
+    {"region": "Sourou", "provinces": ["Koosin", "Nayala", "Sourou"]},
+    {"region": "Tannounyan", "provinces": ["Comoe", "Leraba"]},
+    {"region": "Tapoa", "provinces": ["Dyamongou", "Gobnangou"]},
+    {"region": "Yaadga", "provinces": ["Lorum", "Passore", "Yatenga", "Zondoma"]}
+  ],
+  "changements_structurants": {
+    "nouvelles_provinces": [
+      {"province": "Dyamongou", "chef_lieu": "Kantchari", "departements": ["Botou", "Kantchari"]},
+      {"province": "Karo-Peli", "chef_lieu": "Arbinda", "departements": ["Arbinda", "Koutougou"]}
+    ],
+    "provinces_aux_limites_modifiees": [
+      {"province": "Gobnangou", "chef_lieu": "Diapaga", "departements": ["Diapaga", "Logobou", "Namounou", "Partiaga", "Tambaga", "Tansarga"]},
+      {"province": "Djelgodji", "chef_lieu": "Djibo", "departements": ["Baraboule", "Diguel", "Djibo", "Kelbo", "Nassoumbou", "Pobe-Mengao", "Tongomayel"]}
+    ],
+    "nouvelles_regions": [
+      {"region": "Sirba", "chef_lieu": "Bogande", "provinces": ["Gnagna", "Komondjari"]},
+      {"region": "Soum", "chef_lieu": "Djibo", "provinces": ["Djelgodji", "Karo-Peli"]},
+      {"region": "Sourou", "chef_lieu": "Tougan", "provinces": ["Koosin", "Nayala", "Sourou"]},
+      {"region": "Tapoa", "chef_lieu": "Diapaga", "provinces": ["Dyamongou", "Gobnangou"]}
+    ]
+  }
+}

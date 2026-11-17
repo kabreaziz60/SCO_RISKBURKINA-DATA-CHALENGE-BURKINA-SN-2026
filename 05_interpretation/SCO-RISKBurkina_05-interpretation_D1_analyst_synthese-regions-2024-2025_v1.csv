@@ -1,0 +1,14 @@
+﻿region_historique,nombre_provinces,score_median,tendance_moyenne_3_ans,priorites_immediates,surveillances_renforcees,province_plus_risquee,score_max,part_provinces_priorite_immediate
+Nord,4,67.5,5.2375,4,0,Yatenga,70.33,1.0
+Centre-Nord,3,66.22,-0.4966666666666673,2,0,Sanmatenga,67.78,0.6667
+Plateau-Central,3,62.22,10.28,2,1,Oubritenga,66.11,0.6667
+Sahel,4,70.775,4.2525,2,2,Oudalan,77.56,0.5
+Est,5,68.22,-2.634,2,2,Tapoa,76.22,0.4
+Boucle du Mouhoun,6,47.11,-6.915,2,0,Bale,64.44,0.3333
+Hauts-Bassins,3,47.0,-3.0366666666666666,1,0,Kenedougou,59.11,0.3333
+Sud-Ouest,4,54.885,4.109999999999999,1,2,Ioba,57.22,0.25
+Cascades,2,50.11,2.945,0,2,Comoe,55.89,0.0
+Centre-Sud,3,41.33,2.13,0,1,Zoundweogo,41.33,0.0
+Centre-Est,3,38.89,-4.553333333333334,0,0,Kouritenga,40.0,0.0
+Centre-Ouest,4,26.11,-4.4975,0,0,Ziro,33.56,0.0
+Centre,1,16.0,-0.56,0,0,Kadiogo,16.0,0.0

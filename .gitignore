@@ -1,0 +1,38 @@
+# Données sources du challenge : jamais publiées
+*.xlsx
+*.xls
+*.xlsm
+01_collecte/data/
+data_pack/
+
+# Rapports de contrôle détaillés conservés localement
+rapports_prives/*
+!rapports_prives/.gitkeep
+
+# Fichiers de travail et rendus temporaires
+tmp/
+*.aux
+*.log
+*.out
+~$*
+*.tmp
+documentation/*.docx
+
+# Environnements et caches Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Secrets et configuration locale
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Fichiers système et éditeur
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+

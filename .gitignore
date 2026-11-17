@@ -2,6 +2,7 @@
 *.xlsx
 *.xls
 *.xlsm
+!01_collecte/DONNEES_STATISTQUES_ PRESCOLAIRE ET PRIMAIRE_2016_2025_DCB.xlsx
 01_collecte/data/
 data_pack/
 depot_prive/

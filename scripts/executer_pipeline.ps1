@@ -13,20 +13,21 @@ try {
     )
 
     $ClasseurSource = @(
-        Get-ChildItem -LiteralPath $RacineProjet -File |
-            Where-Object { $_.Extension -in ".xlsx", ".xls", ".xlsm" }
+        Get-ChildItem -LiteralPath (Join-Path $RacineProjet "01_collecte") -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Extension -in ".xlsx", ".xlsm" }
     )
     $TableNettoyee = Join-Path $RacineProjet "02_nettoyage\SCO-RISKBurkina_02-nettoyage_D1_engineer_donnees-decrochage-province-annee_v1.csv"
+    $DossierAnnuaires = Join-Path $RacineProjet "01_collecte\data_pack_selection\data\01_Education_MENAPLN_DGESS\CNS_DGESS\Annuaires"
 
-    if ($ClasseurSource.Count -eq 1) {
+    if ($ClasseurSource.Count -eq 1 -and (Test-Path -LiteralPath $DossierAnnuaires)) {
         Write-Host "Execution : construire_fichier_decrochage.py"
-        & python (Join-Path $PSScriptRoot "construire_fichier_decrochage.py")
+        & python (Join-Path $PSScriptRoot "construire_fichier_decrochage.py") --classeur $ClasseurSource[0].FullName
         if ($LASTEXITCODE -ne 0) {
             throw "Echec de l'etape construire_fichier_decrochage.py"
         }
     }
     elseif (Test-Path -LiteralPath $TableNettoyee) {
-        Write-Host "Source brute absente du depot public : utilisation de la table nettoyee publiee."
+        Write-Host "Source Excel conservee dans 01_collecte. Annuaires du Data Pack non dupliques : utilisation de la table nettoyee publiee."
     }
     else {
         throw "Aucun classeur source ni table nettoyee publiee n'est disponible."

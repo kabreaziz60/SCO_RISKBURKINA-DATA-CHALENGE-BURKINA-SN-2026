@@ -43,7 +43,7 @@ Les seuils d'affichage sont : faible sous 35, modéré de 35 à 54,9, élevé de
 ## Structure du projet
 
 ```text
-depot_prive/01_collecte/  classeur original, uniquement en local et dans le dépôt sécurisé
+01_collecte/          classeur Excel original, conservé sans modification
 02_nettoyage/         notebook, table propre et journal de nettoyage
 03_transformation/    indicateurs, correspondances et sensibilité
 04_analyse/           évaluation temporelle, modèle et prévisions
@@ -59,15 +59,15 @@ Les dossiers d'étape contiennent uniquement leurs livrables. Toute l'explicatio
 
 | Dossier | Contenu public | Rôle dans le parcours |
 |---|---|---|
-| `01_collecte` privé | Classeur Excel original à 14 feuilles | Constitue la donnée réellement collectée. Il est préparé localement dans `depot_prive/01_collecte` et reste hors de GitHub. |
+| `01_collecte` | Classeur Excel original à 14 feuilles | Constitue la donnée réellement collectée et reste strictement inchangé. |
 | `02_nettoyage` | Table province-année nettoyée et notebook | Harmonise les noms, traite les valeurs manquantes et conserve la trace des anomalies. |
 | `03_transformation` | Indicateurs, correspondances territoriales et sensibilité | Construit l'indice de risque et organise les référentiels 13/17 régions et 45/47 provinces. |
 | `04_analyse` | Backtests, notebook, modèles, coefficients et projections | Évalue les horizons un et deux ans et produit 2025-2026 et 2026-2027. |
 | `05_interpretation` | Priorités, synthèse régionale et fiche décideur | Traduit les résultats en alertes et en actions opérationnelles. |
 
-### Pourquoi les données brutes ne figurent pas dans `01_collecte` sur GitHub
+### Conservation de la source originale
 
-Le fichier principal collecté est le classeur Excel DGESS 2016-2025 à 14 feuilles. Il est conservé localement dans `depot_prive/01_collecte` pour la remise sécurisée. Son manifeste est placé dans `documentation`, tandis que GitHub contient uniquement le code et les données agrégées nécessaires au fonctionnement. Cette séparation évite de republier le classeur du challenge sans autorisation. Le Data Pack complet, beaucoup plus volumineux et facultatif, n'est pas dupliqué dans le dépôt final.
+Le fichier principal collecté est le classeur Excel DGESS 2016-2025 à 14 feuilles. Il est conservé dans `01_collecte` sous son nom d'origine et n'est jamais modifié par les traitements. Les scripts lisent cette source puis écrivent leurs résultats dans les étapes suivantes. Le Data Pack complet, beaucoup plus volumineux, n'est pas dupliqué ; seules les sources complémentaires réellement utilisées seront ajoutées à la collecte avec leur nom d'origine.
 
 ## Installation locale
 
@@ -112,7 +112,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\scripts\executer_pipeline.ps1
 ```
 
-Le pipeline reconstruit les données dérivées, contrôle la cohérence, recalcule l'indice, évalue le modèle, produit les priorités et exécute les tests. Dans le dépôt public, il repart de la table nettoyée publiée puisque le classeur brut est volontairement exclu ; dans l'environnement autorisé du challenge, la présence d'un unique classeur à la racine relance aussi l'étape de nettoyage.
+Le pipeline contrôle la cohérence, recalcule l'indice, évalue le modèle, produit les priorités et exécute les tests. Le classeur original est lu dans `01_collecte`. La reconstruction complète de la table nettoyée nécessite aussi les annuaires sélectionnés du Data Pack ; lorsqu'ils ne sont pas dupliqués dans GitHub, le pipeline repart de la table nettoyée publiée.
 
 Pour lancer uniquement les tests :
 
@@ -122,10 +122,9 @@ python -m unittest discover -s tests -v
 
 ## Confidentialité et publication
 
-Le dépôt public ne doit pas contenir :
+À l'exception du classeur principal fourni pour le challenge et conservé dans `01_collecte`, le dépôt public ne doit pas contenir :
 
-- le classeur original du challenge ;
-- les données brutes ou les tables détaillées non nécessaires au fonctionnement public ;
+- d'autres données brutes ou tables détaillées non nécessaires au fonctionnement public ;
 - le dossier `rapports_prives` ;
 - les fichiers temporaires, caches et journaux locaux ;
 - des informations personnelles ou des secrets d'accès.

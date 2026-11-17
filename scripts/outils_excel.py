@@ -14,7 +14,7 @@ MARQUEURS_INSTRUCTIONS_PARASITES = (
 
 
 def trouver_classeur(racine: Path, argument: str | None) -> Path:
-    """Retourne un classeur explicite ou l'unique .xlsx/.xlsm de la racine."""
+    """Retourne un classeur explicite ou l'unique source de ``01_collecte``."""
     if argument:
         chemin = Path(argument).expanduser()
         if not chemin.is_absolute():
@@ -25,15 +25,19 @@ def trouver_classeur(racine: Path, argument: str | None) -> Path:
             raise ValueError("Seuls les fichiers .xlsx et .xlsm sont pris en charge.")
         return chemin
 
+    emplacements = [racine, racine / "01_collecte"]
     candidats = sorted(
-        p for p in racine.iterdir()
+        p
+        for emplacement in emplacements
+        if emplacement.is_dir()
+        for p in emplacement.iterdir()
         if p.is_file()
         and p.suffix.lower() in {".xlsx", ".xlsm"}
         and not p.name.startswith("~$")
     )
     if len(candidats) != 1:
         raise RuntimeError(
-            "Placez un seul classeur à la racine ou utilisez --classeur CHEMIN. "
+            "Placez un seul classeur dans 01_collecte ou utilisez --classeur CHEMIN. "
             f"Nombre détecté : {len(candidats)}."
         )
     return candidats[0]

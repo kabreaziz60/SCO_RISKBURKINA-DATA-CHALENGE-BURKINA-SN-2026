@@ -21,7 +21,7 @@ Le rapport doit répondre directement au Défi 1 et montrer la chaîne complète
 - un tableau synthétique des provinces prioritaires ;
 - un schéma simple du pipeline de données ;
 - une seule capture d'écran complète de l'application ;
-- les détails techniques longs restent dans les notebooks et les LISEZ-MOI.
+- les détails techniques longs restent dans les notebooks et le README principal.
 
 ## Questions auxquelles le rapport doit répondre
 

@@ -22,7 +22,7 @@ Permettre aux responsables de l'éducation d'identifier les provinces où le ris
 - recommandations opérationnelles ;
 - code relançable de bout en bout ;
 - documentation de 15 pages maximum ;
-- dépôts aux cinq étapes avec noms normalisés et LISEZ-MOI.
+- dépôts aux cinq étapes avec noms normalisés et explication centralisée dans le README principal.
 
 ## Méthode proposée
 

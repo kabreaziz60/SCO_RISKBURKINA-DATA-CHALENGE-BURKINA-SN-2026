@@ -16,7 +16,7 @@ Règles à respecter :
 - ne mettre ni espace ni accent ;
 - indiquer l'étape, le défi `D1`, le rôle, une description courte et la version ;
 - un fichier correspond à une seule étape ;
-- ajouter un fichier `LISEZ-MOI` à chaque dépôt ;
+- centraliser l'explication du parcours dans le README principal pour éviter les fichiers répétitifs ;
 - conserver les fichiers sources originaux dans le projet local et créer des copies nommées pour le dépôt final.
 
 ## Proposition pour SCO-RISK
@@ -35,20 +35,9 @@ L'identifiant d'équipe retenu est `SCO-RISKBurkina`.
 | Interprétation | analyst | `SCO-RISKBurkina_05-interpretation_D1_analyst_fiche-decideur-2024-2025_v1.pdf` |
 | Documentation | équipe | `SCO-RISKBurkina_D1_documentation-solution_v2.pdf` |
 
-## Fichiers LISEZ-MOI
+## Documentation centrale
 
-Chaque dépôt contiendra un fichier court, par exemple :
-
-`EQUIPE_02-nettoyage_D1_LISEZ-MOI_v1.txt`
-
-Il précisera :
-
-1. ce que contient le dépôt ;
-2. la source des données ;
-3. le script ou notebook qui l'a produit ;
-4. les contrôles effectués ;
-5. les limites connues ;
-6. l'ordre de reproduction.
+Le README principal précise ce que contient chaque dossier, les sources, les scripts producteurs, les contrôles, les limites et l'ordre de reproduction. Les cinq dossiers d'étape restent ainsi réservés à leurs livrables.
 
 ## Décision de sécurité
 

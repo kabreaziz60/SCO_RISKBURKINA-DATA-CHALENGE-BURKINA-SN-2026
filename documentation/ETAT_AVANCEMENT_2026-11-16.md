@@ -19,7 +19,7 @@
 ## Reste avant le dépôt
 
 - appliquer l'identifiant officiel de l'équipe aux noms des fichiers de dépôt ;
-- emballer les cinq dossiers en conservant un fichier LISEZ-MOI dans chacun ;
+- emballer les cinq dossiers avec uniquement leurs livrables et conserver l'explication générale dans le README principal ;
 - faire une dernière ouverture du paquet final sur la machine locale.
 
 ## Limites à ne pas masquer

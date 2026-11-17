@@ -55,7 +55,19 @@ scripts/              chaîne locale reproductible
 tests/                tests automatisés
 ```
 
-Chaque étape contient un `LISEZ-MOI` et des fichiers nommés selon le modèle officiel `EQUIPE_ETAPE_DEFI_ROLE_description_vN`. Le dossier `01_collecte` publie un manifeste des sources plutôt que les données brutes ; `04_analyse` contient le backtest, les deux projections, les coefficients et les modèles relançables ; `05_interpretation` contient les priorités et la fiche décideur.
+Les dossiers d'étape contiennent uniquement leurs livrables. Toute l'explication du parcours est centralisée dans ce README afin d'éviter les fichiers répétitifs. Les fichiers suivent le modèle officiel `EQUIPE_ETAPE_DEFI_ROLE_description_vN`.
+
+| Dossier | Contenu public | Rôle dans le parcours |
+|---|---|---|
+| `01_collecte` | Manifeste des sources d'origine | Identifie le producteur, la période, l'usage et les limites. Le classeur brut reste hors de GitHub. |
+| `02_nettoyage` | Table province-année nettoyée et notebook | Harmonise les noms, traite les valeurs manquantes et conserve la trace des anomalies. |
+| `03_transformation` | Indicateurs, correspondances territoriales et sensibilité | Construit l'indice de risque et organise les référentiels 13/17 régions et 45/47 provinces. |
+| `04_analyse` | Backtests, notebook, modèles, coefficients et projections | Évalue les horizons un et deux ans et produit 2025-2026 et 2026-2027. |
+| `05_interpretation` | Priorités, synthèse régionale et fiche décideur | Traduit les résultats en alertes et en actions opérationnelles. |
+
+### Pourquoi les données brutes ne figurent pas dans `01_collecte` sur GitHub
+
+Le dossier local de soumission peut contenir les fichiers d'origine autorisés par l'organisateur. Le dépôt GitHub public contient seulement leur manifeste et les données agrégées nécessaires à la reproduction. Cette séparation évite de republier un classeur du challenge sans autorisation et empêche l'exposition de données sensibles. Les fichiers bruts seront déposés séparément dans l'espace sécurisé du challenge si le formulaire les exige.
 
 ## Installation locale
 

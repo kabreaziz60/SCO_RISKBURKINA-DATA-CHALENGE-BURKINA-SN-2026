@@ -32,7 +32,7 @@ Cette grille reprend le guide officiel et les précisions données pendant la r�
 | Données principales correctement nettoyées | Fait avec une anomalie source signalée | Conserver la trace de l'anomalie et le contrôle des totaux. |
 | Documentation de 15 pages maximum | Fait | Rapport final LaTeX contrôlé : 14 pages PDF. |
 | Dépôts nommés selon le modèle | Fait | Préfixe `SCO-RISKBurkina`, étape, défi, rôle, description et version. |
-| Un fichier LISEZ-MOI par dépôt | Présent dans les dossiers principaux | Vérifier et actualiser avant emballage. |
+| Documentation du parcours de dépôt | Centralisée | Le README principal décrit clairement les cinq dossiers sans multiplier les fichiers répétitifs. |
 | Sources citées et totaux contrôlés | Sources tracées ; certains contrôles de totaux restent à formaliser | Haute. |
 | Données sensibles non transmises à une IA | Respecté | Les traitements ont été exécutés localement. |
 
@@ -43,7 +43,7 @@ Cette grille reprend le guide officiel et les précisions données pendant la r�
 | Sources facultatives utiles | Partiellement fait | Les annuaires CNS et la cartographie publique sont utilisés. Ne pas multiplier les sources sans utilité. |
 | Carte ou tableau de bord interactif | Fait | SCO-RISK permet année, région, province et seuil d'alerte. |
 | Modèle prédictif avec fiabilité | Fait | Le modèle est un bonus ; il reste séparé de l'analyse observée. |
-| Dépôts à chaque étape et par rôle | Fait | Dossiers `01_collecte` à `05_interpretation`, fichiers nommés et LISEZ-MOI. |
+| Dépôts à chaque étape et par rôle | Fait | Dossiers `01_collecte` à `05_interpretation`, livrables uniquement et noms normalisés. |
 | Fiche d'une page pour un décideur | Fait | `05_interpretation/SCO-RISKBurkina_05-interpretation_D1_analyst_fiche-decideur-2024-2025_v1.pdf`. |
 | Code relançable de bout en bout | Fait | Lanceur unique et 16 tests automatisés. |
 

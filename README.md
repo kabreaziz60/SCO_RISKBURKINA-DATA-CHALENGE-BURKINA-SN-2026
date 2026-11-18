@@ -9,7 +9,7 @@ SCO-RISK répond au **Défi 1 - Décrochage scolaire** du Data Challenge Burkina
 ## Liens
 
 - Dépôt GitHub : [SCO-RISKBurkina](https://github.com/kabreaziz60/SCO_RISKBURKINA-DATA-CHALENGE-BURKINA-SN-2026)
-- Dashboard Streamlit : lien à ajouter après le déploiement
+- Dashboard Streamlit : [ouvrir SCO-RISK Burkina](https://scoriskburkina-data-chalenge-burkina-sn-2026-d5et5cifno6biaswp.streamlit.app/)
 
 ## Ce que permet la solution
 

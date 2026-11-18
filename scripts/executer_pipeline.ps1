@@ -8,6 +8,7 @@ try {
         "valider_coherence_indicateurs.py",
         "transformer_indicateurs.py",
         "evaluer_prevision.py",
+        "integrer_contexte_esu.py",
         "interpreter_priorites.py",
         "generer_fiche_decideur.py"
     )

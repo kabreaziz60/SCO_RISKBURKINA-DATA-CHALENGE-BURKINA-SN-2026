@@ -140,7 +140,7 @@ Les statistiques DGESS et les annuaires du primaire constituent le coeur de l'an
 DGESS 2016-2025 & Achèvement régional et séries principales & Source coeur\\
 Annuaires du primaire & Abandon, redoublement et promotion par province et niveau & Source coeur\\
 COD AB août 2025 & Limites des 17 régions et 47 provinces & Cartographie\\
-ESU, PDI, EHCVM & Contexte potentiel pour une version future & Non intégré au score\\
+Rapport ESU février 2026 & EDI et structures primaires délocalisées ou rouvertes par région & Contexte séparé du score\\
 \end{tabularx}
 
 \subsection{Table d'analyse}
@@ -372,6 +372,11 @@ Avant la rentrée & Si l'abandon domine, identifier les ruptures de fréquentati
 Suivi annuel & Comparer position, tendance et facteur dominant ; vérifier si l'action réduit durablement le signal.\\
 \end{tabularx}
 
+\subsection{Bonus : contexte sécuritaire et urgence éducative}
+Le rapport ESU au 28 février 2026 recense, au primaire, 436,683 élèves déplacés internes, 492 structures délocalisées et 1,840 structures rouvertes. Un indice descriptif de pression combine 60\,\% du rang des EDI et 40\,\% du rang des structures délocalisées. Les réouvertures sont présentées comme capacité de réponse et non comme facteur de risque.
+
+Le tableau de bord signale une \og double alerte \fg{} lorsque, pour 2025-2026, le risque SCO-RISK régional médian et la pression ESU atteignent chacun 55/100. Ce croisement sert à prioriser une vérification conjointe DGESS/ESU ; il n'est pas ajouté au score et ne prouve aucune causalité.
+
 \subsection{Questions à poser avant une action}
 \begin{itemize}
   \item Le signal est-il confirmé par les données administratives les plus récentes ?
@@ -380,7 +385,6 @@ Suivi annuel & Comparer position, tendance et facteur dominant ; vérifier si l'
   \item Quelle intervention est réaliste et comment son effet sera-t-il suivi ?
 \end{itemize}
 
-\note{La priorité est un point de départ pour le dialogue entre statisticiens, directions régionales, responsables provinciaux et acteurs de terrain.}
 \clearpage
 \thispagestyle{fancy}
 
@@ -394,6 +398,7 @@ Achèvement régional & Plusieurs provinces partagent la même composante contex
 Deux scissions provinciales & Quatre nouvelles provinces reposent sur deux séries historiques sources.\\
 Petit échantillon & La projection reste un outil de priorisation et non une prévision certaine.\\
 Indice relatif & Un score élevé dépend aussi de la distribution nationale de l'année.\\
+Contexte ESU en effectifs & Les volumes ne sont pas rapportés à la population scolaire et datent du 28 février 2026.\\
 \end{tabularx}
 
 \subsection{Garde-fous}
@@ -406,7 +411,7 @@ Indice relatif & Un score élevé dépend aussi de la distribution nationale de 
 \end{itemize}
 
 \subsection{Améliorations futures}
-L'ajout de dénominateurs provinciaux, de données récentes sur les fermetures d'écoles et les déplacements, ainsi qu'un suivi des interventions permettraient d'améliorer la pertinence du score et son évaluation.
+L'ajout de dénominateurs provinciaux, la mise à jour régulière des données ESU et le suivi des interventions permettraient d'améliorer le ciblage sans confondre contexte et causalité.
 \clearpage
 \thispagestyle{fancy}
 
@@ -421,7 +426,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass\\
 }}
 \end{center}
 
-Cette commande reconstruit les données dérivées, contrôle la cohérence, recalcule l'indice, réévalue le modèle, produit les priorités et exécute 16 tests automatisés.
+Cette commande reconstruit les données dérivées, contrôle la cohérence, recalcule l'indice, réévalue le modèle, intègre le contexte ESU, produit les priorités et exécute les tests automatisés.
 
 \subsection{Conclusion}
 SCO-RISK répond au défi en localisant les signaux de décrochage, en montrant leur évolution et en proposant une anticipation évaluée. Sa valeur principale est la traçabilité : chaque alerte est reliée aux indicateurs, à l'année scolaire, au découpage administratif applicable et aux limites de la donnée.
@@ -430,6 +435,7 @@ SCO-RISK répond au défi en localisant les signaux de décrochage, en montrant 
 \begin{itemize}
   \item DGESS, statistiques de l'éducation préscolaire et primaire 2016-2025 ;
   \item annuaires statistiques du primaire ;
+  \item MENAPLN/DGESS, \emph{Rapport statistique mensuel ESU}, février 2026 ;
   \item COD AB Burkina Faso, limites administratives, août 2025 ;
   \item Document du Data Challenge Burkina, édition Éducation 2026 ;
   \item Semaine du numérique 2026, thème officiel de la 21e édition.

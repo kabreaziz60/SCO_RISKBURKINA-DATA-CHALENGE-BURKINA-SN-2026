@@ -36,6 +36,7 @@ REFERENTIEL_HISTORIQUE = RACINE / "config" / "referentiel_provinces_historiques.
 DONNEES_REELLES = RACINE / "03_transformation" / "SCO-RISKBurkina_03-transformation_D1_engineer_indicateurs-province-annee_v1.csv"
 PREVISIONS_FUTURES = RACINE / "04_analyse" / "SCO-RISKBurkina_04-analyse_D1_data-scientist_projection-2025-2027_v2.csv"
 PRIORITES_DECIDEUR = RACINE / "05_interpretation" / "SCO-RISKBurkina_05-interpretation_D1_analyst_priorites-2024-2025_v1.csv"
+CONTEXTE_ESU = RACINE / "05_interpretation" / "SCO-RISKBurkina_05-interpretation_D1_data-analyst_priorites-contexte-urgence_v1.csv"
 LOGO_SN = DOSSIER_APP / "assets" / "logo_semaine_numerique.png"
 LOGO_ADE = DOSSIER_APP / "assets" / "logo_africa_data_entry.jpg"
 ARMOIRIES = DOSSIER_APP / "assets" / "armoiries_burkina_faso_2025.svg"
@@ -196,6 +197,13 @@ def charger_priorites() -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@st.cache_data
+def charger_contexte_esu() -> pd.DataFrame:
+    if CONTEXTE_ESU.exists():
+        return pd.read_csv(CONTEXTE_ESU)
+    return pd.DataFrame()
+
+
 version_historique = f"{CARTE_HISTORIQUE.stat().st_mtime_ns}-{CARTE_HISTORIQUE.stat().st_size}"
 version_2025 = f"{CARTE_2025.stat().st_mtime_ns}-{CARTE_2025.stat().st_size}"
 geojson_historique = charger_carte(str(CARTE_HISTORIQUE), version_historique)
@@ -214,6 +222,7 @@ hierarchie_2025 = {
 }
 donnees_source, mode_demo = charger_indicateurs(tuple(provinces_historiques))
 priorites_decideur = charger_priorites()
+contexte_esu = charger_contexte_esu()
 if "type_donnee" not in donnees_source:
     donnees_source["type_donnee"] = "Démonstration" if mode_demo else "Observé"
 if "annee_indicateurs" not in donnees_source:
@@ -681,6 +690,80 @@ with droite:
     else:
         for action in recommandations(ligne):
             st.write("-", action)
+
+if not contexte_esu.empty:
+    st.markdown(
+        "<div class='section-title'><span>ESU</span><div>Contexte sécuritaire et urgence éducative"
+        "<small>Éclairage complémentaire au 28 février 2026, séparé du score SCO-RISK</small></div></div>",
+        unsafe_allow_html=True,
+    )
+    contexte_focus = (
+        contexte_esu
+        if region_choisie == "Toutes les régions"
+        else contexte_esu[contexte_esu["region_2025"] == region_choisie]
+    )
+
+    if region_choisie == "Toutes les régions":
+        region_pression = contexte_esu.sort_values(
+            "indice_pression_esu", ascending=False
+        ).iloc[0]
+        e1, e2, e3, e4 = st.columns(4)
+        e1.metric(
+            "Élèves déplacés internes – primaire",
+            f"{int(contexte_esu['edi_primaire_total'].sum()):,}".replace(",", " "),
+            "effectif national déclaré",
+        )
+        e2.metric(
+            "Structures primaires délocalisées",
+            f"{int(contexte_esu['structures_delocalisees_primaire'].sum()):,}".replace(",", " "),
+        )
+        e3.metric(
+            "Structures primaires rouvertes",
+            f"{int(contexte_esu['structures_rouvertes_primaire'].sum()):,}".replace(",", " "),
+            "indicateur de réponse, pas de risque",
+        )
+        e4.metric(
+            "Pression contextuelle la plus élevée",
+            str(region_pression["region_2025"]),
+            f"indice descriptif {float(region_pression['indice_pression_esu']):.1f}/100",
+        )
+    elif not contexte_focus.empty:
+        contexte_ligne = contexte_focus.iloc[0]
+        e1, e2, e3, e4 = st.columns(4)
+        e1.metric(
+            "EDI au primaire",
+            f"{int(contexte_ligne['edi_primaire_total']):,}".replace(",", " "),
+        )
+        e2.metric(
+            "Structures délocalisées",
+            int(contexte_ligne["structures_delocalisees_primaire"]),
+        )
+        e3.metric(
+            "Structures rouvertes",
+            int(contexte_ligne["structures_rouvertes_primaire"]),
+            "capacité de réponse",
+        )
+        e4.metric(
+            "Indice de pression ESU",
+            f"{float(contexte_ligne['indice_pression_esu']):.1f}/100",
+            str(contexte_ligne["niveau_pression_esu"]),
+        )
+        if annee == "2025-2026" and bool(contexte_ligne["double_alerte"]):
+            st.warning(
+                f"**Double signal à vérifier – {region_choisie}.** Le risque scolaire "
+                "projeté et la pression ESU dépassent chacun 55/100. "
+                f"{contexte_ligne['action_proposee']}"
+            )
+        else:
+            st.info(f"**Piste d'action :** {contexte_ligne['action_proposee']}")
+
+    st.caption(
+        "Source : MENAPLN/DGESS, Rapport statistique mensuel ESU, février 2026. "
+        "Les valeurs sont des effectifs et non des taux. L'indice de pression (60 % rang des EDI "
+        "+ 40 % rang des structures délocalisées) sert au ciblage descriptif : il n'entre pas "
+        "dans le score SCO-RISK et ne démontre aucune causalité avec le décrochage. "
+        "Toute décision exige une validation locale avec des informations actualisées."
+    )
 
 st.markdown(
     "<div class='section-title'><span>03</span><div>Évolution historique du risque<small>Huit années scolaires pour distinguer tendance et signal ponctuel</small></div></div>",

@@ -18,6 +18,7 @@ SCO-RISK répond au **Défi 1 - Décrochage scolaire** du Data Challenge Burkina
 - suivre l'évolution du risque de 2017-2018 à 2024-2025 ;
 - sélectionner une région puis une province pour consulter ses indicateurs ;
 - distinguer clairement les observations des projections 2025-2026 et 2026-2027 ;
+- consulter séparément le contexte d'urgence éducative ESU de février 2026 ;
 - produire des priorités de vérification et des recommandations pour les décideurs.
 
 ## Principes de lecture
@@ -40,6 +41,12 @@ Le score est calculé année par année à partir de rangs percentiles :
 
 Les seuils d'affichage sont : faible sous 35, modéré de 35 à 54,9, élevé de 55 à 74,9 et critique à partir de 75. Le score sert à prioriser une revue humaine ; il ne mesure pas une probabilité individuelle de décrochage.
 
+### Contexte sécuritaire et urgence éducative
+
+Un module complémentaire exploite le rapport statistique mensuel ESU de février 2026 au niveau des 17 régions. Il présente les élèves déplacés internes du primaire, les structures primaires délocalisées et les structures rouvertes. Un indice descriptif de pression combine 60 % du rang des effectifs d'EDI et 40 % du rang des structures délocalisées.
+
+Cet indice reste **séparé du score SCO-RISK** : les valeurs sont des effectifs, non des taux, et ne démontrent aucune causalité avec le décrochage. Le croisement sert uniquement à repérer les territoires où une vérification conjointe DGESS/ESU est prioritaire.
+
 ## Structure du projet
 
 ```text
@@ -59,15 +66,15 @@ Les dossiers d'étape contiennent uniquement leurs livrables. Toute l'explicatio
 
 | Dossier | Contenu public | Rôle dans le parcours |
 |---|---|---|
-| `01_collecte` | Classeur Excel original à 14 feuilles | Constitue la donnée réellement collectée et reste strictement inchangé. |
-| `02_nettoyage` | Table province-année nettoyée et notebook | Harmonise les noms, traite les valeurs manquantes et conserve la trace des anomalies. |
-| `03_transformation` | Indicateurs, correspondances territoriales et sensibilité | Construit l'indice de risque et organise les référentiels 13/17 régions et 45/47 provinces. |
-| `04_analyse` | Backtests, notebook, modèles, coefficients et projections | Évalue les horizons un et deux ans et produit 2025-2026 et 2026-2027. |
-| `05_interpretation` | Priorités, synthèse régionale et fiche décideur | Traduit les résultats en alertes et en actions opérationnelles. |
+| `01_collecte` | Classeur Excel et rapport ESU originaux | Conserve les deux sources réellement utilisées strictement inchangées. |
+| `02_nettoyage` | Tables scolaires et ESU nettoyées, notebook | Harmonise les noms, traite les valeurs manquantes et conserve la trace des anomalies. |
+| `03_transformation` | Indicateurs, correspondances, sensibilité et pression ESU | Construit les indicateurs sans fusionner le contexte ESU avec le score SCO-RISK. |
+| `04_analyse` | Backtests, modèles, projections et croisement ESU | Évalue les horizons un et deux ans et repère les doubles signaux à vérifier. |
+| `05_interpretation` | Priorités, synthèses et fiche décideur | Traduit les résultats en alertes et en actions opérationnelles prudentes. |
 
 ### Conservation de la source originale
 
-Le fichier principal collecté est le classeur Excel DGESS 2016-2025 à 14 feuilles. Il est conservé dans `01_collecte` sous son nom d'origine et n'est jamais modifié par les traitements. Les scripts lisent cette source puis écrivent leurs résultats dans les étapes suivantes. Le Data Pack complet, beaucoup plus volumineux, n'est pas dupliqué ; seules les sources complémentaires réellement utilisées seront ajoutées à la collecte avec leur nom d'origine.
+Le fichier principal collecté est le classeur Excel DGESS 2016-2025 à 14 feuilles. Le rapport ESU de février 2026 est la seule source complémentaire ajoutée. Ils sont conservés dans `01_collecte` sous leur nom d'origine et ne sont jamais modifiés par les traitements. Le Data Pack complet, beaucoup plus volumineux, n'est pas dupliqué.
 
 ## Installation locale
 
@@ -81,7 +88,7 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-Les fichiers sources du challenge ne sont pas publiés. Le dépôt contient uniquement les tables agrégées et dérivées indispensables au fonctionnement du dashboard et à la reproductibilité des résultats.
+Le dépôt contient les deux sources du challenge effectivement exploitées, leurs tables dérivées et les éléments indispensables au fonctionnement du dashboard. Le reste du Data Pack n'est pas dupliqué.
 
 ## Lancer le tableau de bord
 
@@ -112,7 +119,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\scripts\executer_pipeline.ps1
 ```
 
-Le pipeline contrôle la cohérence, recalcule l'indice, évalue le modèle, produit les priorités et exécute les tests. Le classeur original est lu dans `01_collecte`. La reconstruction complète de la table nettoyée nécessite aussi les annuaires sélectionnés du Data Pack ; lorsqu'ils ne sont pas dupliqués dans GitHub, le pipeline repart de la table nettoyée publiée.
+Le pipeline contrôle la cohérence, recalcule l'indice, évalue le modèle, intègre le contexte ESU, produit les priorités et exécute les tests. Les deux sources originales sont lues dans `01_collecte`. La reconstruction complète de la table scolaire nettoyée nécessite aussi les annuaires sélectionnés du Data Pack ; lorsqu'ils ne sont pas dupliqués, le pipeline repart de la table nettoyée publiée.
 
 Pour lancer uniquement les tests :
 
@@ -122,7 +129,7 @@ python -m unittest discover -s tests -v
 
 ## Confidentialité et publication
 
-À l'exception du classeur principal fourni pour le challenge et conservé dans `01_collecte`, le dépôt public ne doit pas contenir :
+À l'exception du classeur principal et du rapport ESU fournis pour le challenge et conservés dans `01_collecte`, le dépôt public ne doit pas contenir :
 
 - d'autres données brutes ou tables détaillées non nécessaires au fonctionnement public ;
 - le dossier `rapports_prives` ;
@@ -137,6 +144,8 @@ Les traitements sont réalisés localement. Les données sources ne sont pas env
 - l'achèvement est disponible au niveau régional ;
 - deux nouvelles provinces n'ont pas de série historique autonome dans les sources exploitées ;
 - la projection sert à organiser les vérifications, pas à automatiser une décision publique.
+- le contexte ESU est daté du 28 février 2026, agrégé par région et exprimé en effectifs non rapportés à une population scolaire ;
+- le croisement SCO-RISK/ESU est descriptif et ne permet pas d'attribuer causalement le décrochage à la situation sécuritaire.
 
 ## Documentation
 
@@ -145,6 +154,7 @@ Le rapport méthodologique LaTeX et sa version PDF sont disponibles dans le doss
 ## Sources et technologies
 
 - **Données éducatives :** DGESS / MEBAPLN, statistiques et annuaires du primaire 2016-2025 ;
+- **Urgence éducative :** MENAPLN/DGESS, Rapport statistique mensuel ESU, février 2026 ;
 - **Cartographie :** limites historiques cohérentes avec les annuaires et COD-AB / OCHA, version d'août 2025 ;
 - **Cadre du projet :** document et Data Pack du Data Challenge Burkina 2026 ;
 - **Application :** Python, Streamlit, Pandas, NumPy et Plotly ;

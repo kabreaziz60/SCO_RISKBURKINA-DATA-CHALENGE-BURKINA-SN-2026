@@ -33,14 +33,14 @@ Cette grille reprend le guide officiel et les précisions données pendant la r�
 | Documentation de 15 pages maximum | Fait | Rapport final LaTeX contrôlé : 14 pages PDF. |
 | Dépôts nommés selon le modèle | Fait | Préfixe `SCO-RISKBurkina`, étape, défi, rôle, description et version. |
 | Documentation du parcours de dépôt | Centralisée | Le README principal décrit clairement les cinq dossiers sans multiplier les fichiers répétitifs. |
-| Sources citées et totaux contrôlés | Sources tracées ; certains contrôles de totaux restent à formaliser | Haute. |
+| Sources citées et totaux contrôlés | Fait | Les totaux ESU sont validés automatiquement contre le rapport officiel. |
 | Données sensibles non transmises à une IA | Respecté | Les traitements ont été exécutés localement. |
 
 ## Bonus présentés pendant la réunion
 
 | Bonus | État | Décision |
 |---|---|---|
-| Sources facultatives utiles | Partiellement fait | Les annuaires CNS et la cartographie publique sont utilisés. Ne pas multiplier les sources sans utilité. |
+| Sources facultatives utiles | Fait de manière ciblée | Les annuaires CNS, la cartographie et le rapport ESU de février 2026 sont utilisés, sans multiplier les sources. |
 | Carte ou tableau de bord interactif | Fait | SCO-RISK permet année, région, province et seuil d'alerte. |
 | Modèle prédictif avec fiabilité | Fait | Le modèle est un bonus ; il reste séparé de l'analyse observée. |
 | Dépôts à chaque étape et par rôle | Fait | Source originale dans `01_collecte` ; étapes 02 à 05 publiées avec des noms normalisés. |

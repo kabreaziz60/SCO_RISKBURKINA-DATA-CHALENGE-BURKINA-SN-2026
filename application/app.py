@@ -623,7 +623,17 @@ with gauche:
             )
 
 with droite:
-    st.markdown("### Détail du territoire")
+    focus_automatique = (
+        region_choisie == "Toutes les régions" and province_choisie == province_max
+    )
+    if focus_automatique:
+        st.markdown("### Focus automatique — province au risque le plus élevé")
+        st.caption(
+            f"{province_choisie} est affichée automatiquement car son score est "
+            f"le plus élevé en {annee}. La carte reste nationale."
+        )
+    else:
+        st.markdown("### Détail de la province sélectionnée")
     ligne = vue_focus[vue_focus["province"] == province_choisie].iloc[0]
     st.markdown(
         f"<div class='decision'><strong>{province_choisie}</strong><br>"
